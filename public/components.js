@@ -699,7 +699,8 @@ function setupEpisodeNavigation(anime, currentEpNum) {
 }
 
 // --- Main Data Fetch and Page-Specific Logic ---
-fetch('https://animezones-64tp.onrender.com') // Backend server anime endpoint
+fetch('https://animezones-64tp.onrender.com/anime')
+
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
