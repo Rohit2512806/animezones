@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Anime List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="components.css">
+  <style>
+/* Page-specific styles for all-anime.html */
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+  margin: 0;
+  padding: 0;
+}
+
+.all-anime-section {
+    padding: 20px;
+    margin: 10px auto;
+    max-width: 1200px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.all-anime-section h2 {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.alphabet-filter {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.alphabet-filter button {
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background-color 0.3s ease;
+}
+
+.alphabet-filter button:hover {
+    background-color: var(--accent);
+    color: #111;
+}
+
+.alphabet-title {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    width: 100%;
+}
+
+.anime-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    gap: 1.5rem;
+    margin-top: 0px;
+    justify-items: start;
+}
+
+.anime-card {
+      width: 410px;
+      height: 5rem;
+      display: flex;
+      flex-direction: row;
+      background-color: var(--card-bg);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      align-items: left ;
+      padding: 1rem 1.5rem;
+      gap: 15px;
+      margin-bottom: 10px;
+}
+
+.anime-card:hover {
+    transform: translateY(-5px);
+}
+
+.anime-card img {
+    width: 70px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.anime-info {
+text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.anime-title {
+        font-size: 0.9rem;
+    margin-top: 5px;
+    text-align: left;
+    max-width: none;
+    -webkit-line-clam: 2;
+    height: auto;
+}
+
+.status-episode {
+    font-size: 0.7em;
+    color: var(--muted-text);
+    margin-top: 5px;
+}
+
+.genre {
+    font-size: 0.7em;
+    color: var(--muted-text);
+    margin-top: 5px;
+    -webkit-line-clam: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+@media (max-width: 600px) {
+    .anime-card {
+     align-items: flex-start;
+    text-align: left;
+    padding: 10px;
+    }
+    .anime-card img {
+    margin-right: 15px;
+    margin-bottom: 0;
+    width: 70px;
+    height: 90px;
+    }
+    .anime-info {
+        text-align: left;
+    }
+}
+.status-episode.complete {
+    color: lightgreen;
+}
+.status-episode.ongoing {
+    color: orange;
+}
+  </style>
+</head>
+<body>
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
+
+  <div id="mainContent">
+    <div class="all-anime-section" id="allAnimeSection">
+      <h2>A-z List</h2>
+      <div class="alphabet-filter" id="alphabetFilter">
+        </div>
+      <div id="alphabetTitle" class="alphabet-title"></div>
+      <div class="anime-container" id="allAnimeGrid">
+        </div>
+      </div>
+  </div>
+  <div id="newSeriesPlaceholder"></div>
+  <div id="genreListPlaceholder"></div>
+  <div class="search-results-section" id="searchResultsSection">
+    <h2></h2>
+    <div class="anime-container" id="searchResultsContainer">
+        </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="components.js"></script>
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const allAnimeGrid = document.getElementById('allAnimeGrid');
+    const alphabetFilter = document.getElementById('alphabetFilter');
+    const alphabetTitle = document.getElementById('alphabetTitle');
+    let sortedAnimeList = [];
+    let currentFilter = null;
+
+    function initAtoZPage() {
+        if (!window.allAnimeList || window.allAnimeList.length === 0) {
+            allAnimeGrid.innerHTML = `<p style="color: red; text-align: center; padding: 20px;">No anime data found.</p>`;
+            return;
+        }
+
+        sortedAnimeList = [...window.allAnimeList].sort((a, b) => {
+            const titleA = a.title.toUpperCase();
+            const titleB = b.title.toUpperCase();
+            return titleA.localeCompare(titleB);
+        });
+
+     function getAnimeStatus(title) {
+    const anime = window.allAnimeList.find(a => a.title.trim().toLowerCase() === title.trim().toLowerCase());
+
+    if (!anime) return 'Unknown';
+
+    const total = parseInt(anime.totalEpisodes);
+    let current = 0;
+
+    // Try to get current episode from episodes array
+    if (Array.isArray(anime.episodes) && anime.episodes.length > 0) {
+        const episodeNums = anime.episodes.map(e => e.episodeNum || 0);
+        current = Math.max(...episodeNums);
+    }
+
+    if (!isNaN(current) && !isNaN(total)) {
+        return current >= total ? 'Complete' : 'Ongoing';
+    }
+
+    // Fallback
+    return 'Unknown';
+}
+
+
+
+        function displayAnimeList(animeList, filterLetter = null) {
+            allAnimeGrid.innerHTML = '';
+            let filteredList = animeList;
+
+            if (filterLetter) {
+                filteredList = animeList.filter(anime => anime.title.toUpperCase().startsWith(filterLetter));
+                alphabetTitle.textContent = filterLetter;
+            } else {
+                alphabetTitle.textContent = '';
+            }
+
+            if (filteredList.length === 0) {
+                allAnimeGrid.innerHTML = `<p style="text-align:center; color: gray;">No anime starting with '${filterLetter}'</p>`;
+                return;
+            }
+
+            filteredList.forEach(anime => {
+                const link = document.createElement('a');
+                link.href = `anime-detail.html?title=${encodeURIComponent(anime.title)}`;
+                link.style.textDecoration = 'none';
+                link.style.color = 'inherit';
+
+                const statusText = getAnimeStatus(anime.title);
+                const statusClass = statusText === "Complete" ? "complete" : "ongoing";
+
+                const card = document.createElement('div');
+                card.className = 'anime-card';
+                card.innerHTML = `
+                    <img src="${anime.img}" alt="${anime.title}">
+                    <div class="anime-info">
+                        <div class="anime-title">${anime.title}</div>
+                        <div class="status-episode ${statusClass}">${statusText} | ${anime.totalEpisodes || 'N/A'} Eps</div>
+                        <div class="genre">${Array.isArray(anime.genre) ? anime.genre.join(', ') : (anime.genre || 'N/A')}</div>
+                    </div>
+                `;
+                link.appendChild(card);
+                allAnimeGrid.appendChild(link);
+            });
+        }
+
+        // Alphabet filter buttons
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        alphabet.split('').forEach(letter => {
+            const button = document.createElement('button');
+            button.textContent = letter;
+            button.addEventListener('click', () => {
+                currentFilter = letter;
+                displayAnimeList(sortedAnimeList, letter);
+            });
+            alphabetFilter.appendChild(button);
+        });
+
+        // Initial render
+        displayAnimeList(sortedAnimeList);
+    }
+
+    // ✅ Wait until window.allAnimeList is available
+    const waitForData = setInterval(() => {
+        if (window.allAnimeList) {
+            clearInterval(waitForData);
+            initAtoZPage();
+        }
+    }, 100); // check every 100ms
+});
+</script>
+</body>
+</html>

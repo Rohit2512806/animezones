@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeSub - Privacy Policy</title> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="components.css"> <style>
+    /* --- General & Theme Styles (common, so can remain or move to components.css) --- */
+    :root {
+      --bg-color: #111;
+      --text-color: #fff;
+      --card-bg: #222;
+      --accent: #00ffcc;
+      --muted-text: #666;
+      --border-color: #444; /* Added for list items */
+    }
+
+    body.light {
+      --bg-color: #f0f0f0;
+      --text-color: #111;
+      --card-bg: #fff;
+      --muted-text: #888;
+      --border-color: #ddd;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* --- Privacy Container Styles (Specific to this page, so can remain here or move if reused) --- */
+    .privacy-container {
+        background-color: var(--card-bg);
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 90%; /* Responsive width */
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+        margin: 2rem auto; /* Center with top/bottom margin */
+        display: block; /* Default to visible when page loads, then controlled by JS */
+        box-sizing: border-box;
+    }
+
+    .privacy-container h1 {
+        color: var(--text-color);
+        font-size: 2.2rem; /* Slightly larger title for policies */
+        margin-bottom: 1.5rem;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .privacy-container h2 {
+        color: var(--text-color);
+        margin-top: 2rem; /* More space between sections */
+        margin-bottom: 0.8rem;
+        font-size: 1.3rem; /* Larger subheadings */
+        border-bottom: 1px solid var(--accent); /* Underline for headings */
+        padding-bottom: 0.3rem;
+    }
+
+    .privacy-container p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--muted-text);
+        margin-bottom: 1rem;
+    }
+
+    .privacy-container ul {
+        padding-left: 1.5rem;
+        list-style: disc; /* Default disc for bullet points */
+        color: var(--muted-text); /* Ensure list text color is muted */
+        margin-bottom: 1rem;
+    }
+
+    .privacy-container li {
+        margin-bottom: 0.5rem;
+    }
+
+    .privacy-container a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .privacy-container a:hover {
+        color: #00e6b3;
+        text-decoration: underline;
+    }
+
+    /* --- Responsive adjustments for privacy-container --- */
+    @media (max-width: 768px) {
+        .privacy-container {
+          padding: 1.5rem;
+          width: 95%;
+        }
+        .privacy-container h1 {
+          font-size: 1.8rem;
+        }
+        .privacy-container h2 {
+          font-size: 1.2rem;
+        }
+        .privacy-container p, .privacy-container ul, .privacy-container li {
+          font-size: 0.95rem;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .privacy-container {
+            padding: 1rem;
+            margin: 1rem auto;
+        }
+        .privacy-container h1 {
+            font-size: 1.5rem;
+        }
+        .privacy-container h2 {
+            font-size: 1.1rem;
+        }
+        .privacy-container p, .privacy-container ul, .privacy-container li {
+            font-size: 0.85rem;
+        }
+    }
+  </style>
+</head>
+<body class="dark">
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
+
+  <div id="mainContent"> <div class="privacy-container" id="privacyContainer">
+      <h1>Privacy Policy</h1>
+      <p>We value your privacy. This page outlines how we handle your data and protect your information while you use our anime streaming platform.</p>
+
+      <h2>1. Information Collection</h2>
+      <p>We do not collect any personal information from users. No sign-up or login is required to access content.</p>
+
+      <h2>2. Cookies</h2>
+      <p>We may use cookies to improve the user experience. These cookies do not track personal data.</p>
+
+      <h2>3. Third-party Links</h2>
+      <p>Our site may include links to external websites. We are not responsible for the privacy practices of those sites.</p>
+
+      <h2>4. Changes to Policy</h2>
+      <p>This policy may be updated occasionally. Please check back periodically for changes.</p>
+
+      <h2>5. Contact</h2>
+      <p>If you have any questions, contact us at <a href="mailto:rohitpatel00934@gmail.com">rohitpatel00934@gmail.com</a>.</p>
+    </div>
+  </div>
+
+  <div class="search-results-section" id="searchResultsSection">
+    <h2></h2>
+    <div class="anime-container" id="searchResultsContainer">
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        applySavedTheme();
+        // searchResultsSection और privacyContainer की डिस्प्ले को कंट्रोल करने का लॉजिक
+        // अब components.js में होना चाहिए।
+        // यहां सिर्फ initial state सेट कर सकते हैं, या components.js को ही करने दें।
+        const searchResultsSection = document.getElementById('searchResultsSection');
+        const privacyContainer = document.getElementById('privacyContainer'); // Corrected ID
+        const mainContent = document.getElementById('mainContent');
+
+        // जब पेज लोड हो, तो सर्च रिजल्ट सेक्शन छिपा हो और प्राइवेसी कंटेंट दिख रहा हो
+        searchResultsSection.style.display = 'none';
+        if (privacyContainer) {
+            privacyContainer.style.display = 'block';
+        }
+        if (mainContent) {
+            mainContent.style.display = 'block';
+        }
+    });
+  </script>
+</body>
+</html>

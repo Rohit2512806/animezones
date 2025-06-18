@@ -1,0 +1,738 @@
+/* components.css */
+:root {
+    --bg-color: #111;
+    --text-color: #fff;
+    --card-bg: #222;
+    --accent: #00ffcc;
+    --muted-text: #666;
+    --secondary-bg: #333; /* Added for genre/season items, detail list items */
+}
+
+body.light {
+    --bg-color: #f0f0f0;
+    --text-color: #111;
+    --card-bg: #fff;
+    --muted-text: #888;
+    --secondary-bg: #e0e0e0;
+}
+
+/* Base Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styles */
+.header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background-color: var(--card-bg);
+}
+
+.site-branding a {
+    text-decoration: none;
+    color: inherit;
+}
+.logo {
+    padding: 0 0.3rem;
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: 1px;
+    line-height: 0.8; /* Adjust to prevent extra space */
+}
+.red-z {
+  color: red;
+}
+.tagline {   
+    font-family: 'Orbitron', sans-serif;
+    margin: 0.01rem 0.3rem 0;
+    font-size: 0.7rem;
+    color: var(--muted-text);
+    line-height: 1.2;
+}
+
+.right-icons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--text-color); /* Use text-color for default icon color */
+    font-size: 1.3rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s;
+}
+
+.icon-button:hover {
+    color: var(--accent);
+}
+
+/* Navigation Styles */
+nav {
+    background-color: var(--secondary-bg); /* Use secondary-bg for nav */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.6rem;
+    flex-wrap: wrap;
+}
+
+
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 1rem 1rem;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--accent);
+}
+
+    .menu-toggle {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+    background-color: var(--secondary-bg); /* Use secondary-bg for nav */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0rem 0rem;
+    flex-wrap: wrap;
+}
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background-color: #333;
+        padding: 1rem 0;
+        text-align: center;
+      }
+
+      .nav-links a {
+        padding: 0.5rem 1rem;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+    }
+
+/* Search Box Styles */
+.search-box {
+    padding: 1rem;
+    background-color: var(--card-bg); /* Use card-bg for search box */
+    display: none; /* Hidden by default, shown by JS */
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.search-wrapper input {
+    width: 100%;
+    max-width: 600px;
+    padding: 0.6rem 2.8rem 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    background-color: var(--bg-color); /* Input background */
+    color: var(--text-color); /* Input text color */
+}
+
+.search-wrapper input::placeholder {
+    color: var(--muted-text);
+}
+
+.search-icon-inside {
+    position: absolute;
+    right: calc(50% - (min(600px, 100%) / 2) + 16px); /* Adjust for padding and input width */
+    color: var(--accent);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Anime Grid Styles */
+.anime-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.anime-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.anime-item > a {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.anime-card {
+  position: relative;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5px;
+  width: 142px; /* Increased slightly for better fit */
+  height: 200px; /* Adjusted height */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+.anime-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+.anime-card img {
+  width: 100%;
+  height: 100%;
+ object-fit: cover;
+}
+.anime-card h3 {
+  display: none; /* Hide original h3 */
+}
+.card-actions {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 25px;
+  padding: 0rem 0rem;
+  bottom: 0;
+  left: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+  .section-title {
+    font-size: 1.5em;
+  }
+  .anime-container {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.8rem;
+  }
+  .anime-card {
+    width: 112px;
+    height: 164px;
+
+  }
+  .anime-card img {
+    width: 100%;
+    height: 100%;
+  }
+  .anime-title {
+    max-width: 112px;
+    font-size: 0.8rem;
+  }
+  .episode-btn, .sub-btn {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.3rem;
+  }
+}
+
+.donghua-btn {
+  position: absolute;
+  top: -174px;
+  right: 0px;
+  background: linear-gradient(135deg, #ff4d4f, hwb(0 1% 61%));
+  color: white;
+  border: none;
+  border-radius: 6px 0px 13px 0px;
+  padding: 6px 6px;
+  font-size: 12px;
+   font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+ @media (max-width: 768px) {
+.donghua-btn {
+  position: absolute;
+  top: -138px;
+  right: 0px;
+  background: linear-gradient(135deg, #ff4d4f, hwb(0 1% 61%));
+  color: white;
+  border: none;
+  border-radius: 6px 0px 10px 0px;
+  padding: 5px 5px;
+  font-size: 12px;
+   font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
+  }
+/* 🔥 Fire icon style */
+.fire-icon {
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  width: 25px;
+  height: 25px;
+  background-color: lch(93.09% 92.71 102.91);
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  z-index: 2;
+}
+.fire-icon::before {
+  content: "🔥";
+}
+
+.episode-btn{
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: center;
+  border-radius: 0px 13px 0px 6px;
+  padding: 4px 6px;
+  
+}
+.sub-btn {
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: center;
+  border-radius: 8px 0px 8px 0px;
+  padding: 4px 6px;
+  
+}
+.episode-btn {
+  background: linear-gradient(135deg, #ffc74d, hwb(46 1% 61%));
+  color: white;
+}
+.sub-btn {
+  background: linear-gradient(135deg, #91ff4d, hwb(219 1% 61%));
+  color: black;
+}
+.anime-title {
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-top: 0.5rem;
+  text-align: center;
+  width: 100%;
+  max-width: 142px; /* Match card width */
+  word-wrap: break-word;
+  height: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clam: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.2;
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--card-bg); /* Use card-bg for footer */
+    color: var(--text-color);
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+
+}
+
+.footer-content {
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
+
+/* General Section Title Styling (used in index.html, anime-detail.html, all-anime.html) */
+.section-title {
+    color: var(--text-color);
+    margin-bottom: 20px;
+    font-size: 1.8em;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px;
+}
+/* Responsive adjustments for common components */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block; /* Show menu toggle on smaller screens */
+        order: 1; /* Order toggle to appear first in nav */
+    }
+
+    .nav-links {
+        display: none; /* Hide navigation links by default */
+        flex-direction: column;
+        width: 100%;
+        background-color: var(--secondary-bg);
+        padding: 1rem 0;
+        text-align: center;
+        order: 2; /* Order links below toggle */
+    }
+
+    .nav-links.show { /* For JS to toggle */
+        display: flex;
+    }
+
+    nav {
+        flex-wrap: wrap; /* Allow nav items to wrap */
+    }
+    .search-icon-inside {
+        right: calc(50% - (min(600px, 100%) / 2) + 16px); /* Ensure consistent position */
+    }
+}
+
+@media (max-width: auto) {
+    .header-bar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .right-icons {
+        align-self: flex-end; /* Push icons to the right */
+        margin-top: -30px; /* Adjust if needed to align with logo */
+    }
+    .logo {
+        font-size: 1.8rem;
+    }
+    .tagline {
+        font-size: 0.8rem;
+    }
+    .search-icon-inside {
+        right: 25px; /* Adjust for smaller screens without max-width */
+    }
+}
+/* Search Results Section (for search on this page, or global search) */
+.search-results-section {
+    padding: 1rem;
+    margin: 1rem auto;
+    border-radius: 10px;
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    flex-direction: column;
+    display: none; /* Hidden by default, shown when searching */
+}
+.search-results-section h2 {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 20px;
+}
+.search-results-section .anime-container {
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Larger cards for search results */
+    gap:1.5rem;
+}
+.search-results-section .anime-card {
+      width: 410px;
+      height: 5rem;
+      display: flex;
+      flex-direction: row;
+      background-color: var(--card-bg);
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      gap: 15px;
+      margin-bottom: 10px;
+}
+.search-results-section .anime-card img {
+    width: 70px; /* Fixed width for image in search results */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+.search-results-section .anime-card h3 {
+    display: none;
+}
+.search-results-section .anime-card .card-actions {
+    display: none; /* Hide episode/sub buttons in search results card */
+}
+.search-results-section .anime-info {
+    text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.search-results-section .anime-info .anime-title {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    text-align: left;
+    max-width: none;
+    -webkit-line-clam: 2; /* Limit title to 2 lines */
+    height: auto;
+}
+.search-results-section .anime-info .status-episode {
+    font-size: 0.7em;
+    color: var(--muted-text);
+    margin-top: 5px;
+}
+.search-results-section .anime-info .status-episode.complete {
+    color: lightgreen;
+}
+.search-results-section .anime-info .status-episode.ongoing {
+    color: orange;
+}
+.search-results-section .anime-info .genre {
+    font-size: 0.7em;
+    color: var(--muted-text);
+    margin-top: 5px;
+    -webkit-line-clam: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+/* Responsive adjustments for search results */
+@media (max-width: 600px) {
+  .search-results-section .anime-container {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 0.8rem;
+  }
+  .search-results-section .anime-card {
+    align-items: flex-start; /* Keep items aligned to the start (left) */
+    text-align: left; /* Keep text aligned to the left */
+    padding: 10px;
+  }
+  .search-results-section .anime-card img {
+    margin-right: 15px; /* Add margin back if removed by column layout */
+    margin-bottom: 0; /* No bottom margin when row */
+    width: 70px; /* Revert to larger image size if desired */
+    height: 90px;
+  }
+  .search-results-section .anime-info {
+    text-align: left; /* Ensure text is left-aligned */
+  }
+  .search-results-section .anime-info .anime-title,
+  .search-results-section .anime-info .status-episode,
+  .search-results-section .anime-info .genre {
+    text-align: left; /* Ensure text is left-aligned */
+  }
+}
+
+.new-series-section {
+    padding: 1rem;
+    margin: 1rem auto;
+    border-radius: 10px;
+    background-color: var(--card-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+     align-items: flex-start;
+}
+.new-series-section h2 {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+.new-series-section .anime-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); /* Larger cards for search results */
+    gap: 1.5rem;
+}
+.new-series-section .anime-card {
+          width: 390px;
+          height: 5rem;
+          display: flex;
+          flex-direction: row;
+          background-color: var(--card-bg);
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+          overflow: hidden;
+          align-items: center;
+          padding: 1rem 1.5rem;
+          gap: 15px;
+          margin-bottom: 10px;
+}
+.new-series-section .anime-card img {
+    width: 70px; /* Fixed width for image in search results */
+    height: 100px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-right: 15px;
+}
+
+.new-series-section .anime-card .card-actions {
+    display: none; /* Hide episode/sub buttons in search results card */
+}
+.new-series-section .anime-info {
+    text-align: left;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.new-series-section .anime-info .anime-title {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    text-align: left;
+    max-width: none;
+    -webkit-line-clam: 2; /* Limit title to 2 lines */
+    height: auto;
+}
+.new-series-section .anime-info .status-episode {
+    font-size: 0.7em;
+    color: var(--muted-text);
+    margin-top: 5px;
+}
+.new-series-section .anime-info .status-episode.complete {
+    color: lightgreen;
+}
+.new-series-section .anime-info .status-episode.ongoing {
+    color: orange;
+}
+.new-series-section .anime-info .genre {
+    font-size: 0.7em;
+    color: var(--muted-text);
+    margin-top: 5px;
+    -webkit-line-clam: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+}
+
+/* Responsive adjustments for search results */
+@media (max-width: 600px) {
+  .new-series-section .anime-container {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 0.8rem;
+  }
+  .new-series-section .anime-card {
+    align-items: flex-start; /* Keep items aligned to the start (left) */
+    text-align: left; /* Keep text aligned to the left */
+    padding: 10px;
+  }
+  .new-series-section .anime-card img {
+    margin-right: 15px; /* Add margin back if removed by column layout */
+    margin-bottom: 0; /* No bottom margin when row */
+    width: 70px; /* Revert to larger image size if desired */
+    height: 90px;
+  }
+  .new-series-section .anime-info {
+    text-align: left; /* Ensure text is left-aligned */
+  }
+  .new-series-section .anime-info .anime-title,
+  .new-series-section .anime-info .status-episode,
+  .new-series-section .anime-info .genre {
+    text-align: left; /* Ensure text is left-aligned */
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 15px auto;
+  padding: 0 20px;
+}
+
+/* Genre and Season Sections */
+.genre-section, .season-section {
+  background-color: var(--card-bg);
+  padding: 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.genre-list, .season-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.genre-item, .season-item {
+  background-color: rgb(5, 139, 242);
+  color: #f9f6f6;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+.genre-item:hover, .season-item:hover {
+  background-color: rgb(5, 139, 242);
+  color: #f9f6f6;
+}
+
+/* Anime information*/
+.anime-info-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-bg);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    gap: 12px;
+}
+
+.anime-info-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid orange;
+}
+
+.anime-info-details h4 {
+    margin: 0;
+    font-size: 1em;
+    color: var(--text-color);
+}
+
+.anime-info-details p {
+    font-weight: bold;
+    margin: 2px 0;
+    font-size: 0.8em;
+    color: var(--muted-text);
+}
+.anime-status {
+  font-size: 0.8em;
+  font-weight: bold;
+  padding:  2px;
+  border-radius: 5px;
+}
+.status-ongoing {
+  color: #e67e22;
+}
+.status-completed {
+  color: #27ae60;
+}

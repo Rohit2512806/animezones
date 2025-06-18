@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeSub - Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="components.css"> <style>
+    /* --- General & Theme Styles --- */
+    :root {
+      --bg-color: #111;
+      --text-color: #fff;
+      --card-bg: #222;
+      --accent: #00ffcc;
+      --muted-text: #666;
+      --border-color: #444; 
+       --text-color: #111;
+  
+    }
+
+    body.light {
+      --bg-color: #f0f0f0;
+      --text-color: #111;
+      --card-bg: #fff;
+      --muted-text: #888;
+      --border-color: #ddd;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.3s, color 0.3s;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    .contact-container { 
+        background-color: var(--card-bg);
+        padding: 2rem;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 90%; /* Responsive width */
+        box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+        margin: 2rem auto; /* Center with top/bottom margin */
+        display: block; /* Default to visible when page loads, then controlled by JS */
+        box-sizing: border-box;
+    }
+
+    .contact-container h1 {
+        color: var(--text-color);
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .contact-container h2 {
+        color: var(--text-color);
+        margin-top: 2rem;
+        margin-bottom: 0.8rem;
+        font-size: 1.3rem;
+        border-bottom: 1px solid var(--accent);
+        padding-bottom: 0.3rem;
+    }
+
+    .contact-container p {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--muted-text);
+        margin-bottom: 1rem;
+    }
+
+    .contact-container ul {
+        padding-left: 1.5rem;
+        list-style: disc;
+        color: var(--muted-text);
+        margin-bottom: 1rem;
+    }
+
+    .contact-container li {
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-container a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .contact-container a:hover {
+        color: #00e6b3;
+        text-decoration: underline;
+    }
+
+
+    /* --- Responsive adjustments --- */
+    @media (max-width: 768px) {
+        .contact-container {
+          padding: 1.5rem;
+          width: 95%;
+        }
+        .contact-container h1 {
+          font-size: 1.8rem;
+        }
+        .contact-container h2 {
+          font-size: 1.2rem;
+        }
+        .contact-container p, .contact-container ul, .contact-container li {
+          font-size: 0.95rem;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .contact-container {
+            padding: 1rem;
+            margin: 1rem auto;
+        }
+        .contact-container h1 {
+            font-size: 1.5rem;
+        }
+        .contact-container h2 {
+            font-size: 1.1rem;
+        }
+        .contact-container p, .contact-container ul, .contact-container li {
+            font-size: 0.85rem;
+        }
+    }
+  </style>
+</head>
+<body class="dark">
+  <div id="header-placeholder"></div>
+  <div id="nav-placeholder"></div>
+
+  <div id="mainContent"> <div class="contact-container" id="contactContainer">
+      <h1>Contact Us / Privacy Policy</h1>
+      <p>We value your privacy. This page outlines how we handle your data and protect your information while you use our anime streaming platform.</p>
+
+      <h2>1. Information Collection</h2>
+      <p>We do not collect any personal information from users. No sign-up or login is required to access content.</p>
+
+      <h2>2. Cookies</h2>
+      <p>We may use cookies to improve the user experience. These cookies do not track personal data.</p>
+
+      <h2>3. Third-party Links</h2>
+      <p>Our site may include links to external websites. We are not responsible for the privacy practices of those sites.</p>
+
+      <h2>4. Changes to Policy</h2>
+      <p>This policy may be updated occasionally. Please check back periodically for changes.</p>
+
+      <h2>5. Contact</h2>
+      <p>If you have any questions, contact us at <a href="mailto:rohitpatel00934@gmail.com">rohitpatel00934@gmail.com</a>.</p>
+    </div>
+  </div>
+
+  <div class="search-results-section" id="searchResultsSection">
+    <h2></h2>
+    <div class="anime-container" id="searchResultsContainer">
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        applySavedTheme();
+        // searchResultsSection और contactContainer की डिस्प्ले को कंट्रोल करने का लॉजिक
+        // अब components.js में होना चाहिए।
+        // यहां सिर्फ initial state सेट कर सकते हैं, या components.js को ही करने दें।
+        const searchResultsSection = document.getElementById('searchResultsSection');
+        const contactContainer = document.getElementById('contactContainer');
+        const mainContent = document.getElementById('mainContent'); // Added mainContent reference
+
+        // जब पेज लोड हो, तो सर्च रिजल्ट सेक्शन छिपा हो और कांटेक्ट कंटेंट दिख रहा हो
+        searchResultsSection.style.display = 'none';
+        if (contactContainer) { // Ensure contactContainer exists
+            contactContainer.style.display = 'block';
+        }
+        if (mainContent) { // Ensure mainContent exists
+            mainContent.style.display = 'block';
+        }
+    });
+
+    // applySavedTheme(), toggleTheme(), toggleMenu(), toggleSearchBox()
+    // ये सभी फ़ंक्शंस अब components.js में होने चाहिए और Contact.html से हटा दिए गए हैं।
+    // अगर वे components.js में नहीं हैं, तो उन्हें वहां ले जाएं।
+    // अगर वे पहले से ही components.js में हैं, तो उन्हें यहां दोबारा परिभाषित करने की आवश्यकता नहीं है।
+
+    // Note: 'getAnimeByTitle' and 'allAnimeList' are expected to be defined in 'animeData.js'
+    // 'createSearchAnimeCard' should be in components.js as well.
+  </script>
+</body>
+</html>

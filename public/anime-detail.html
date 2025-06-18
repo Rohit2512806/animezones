@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Detail</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="components.css">
+    <style>
+        /* Page-specific styles for anime-detail.html */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            margin: 0;
+            padding: 0;
+        }
+
+        .anime-detail-container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .anime-detail-cover {
+            width: 250px;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .anime-detail-header h1 {
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+
+        .anime-detail-header p {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1em;
+            text-align: left;
+        }
+
+        .anime-detail-info {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .anime-detail-info h2 {
+            color: var(--text-color);
+            margin-bottom: 5px;
+            font-size: 1.8em;
+            text-align: left;
+            position: relative;
+            padding-bottom: 0px;
+        }
+
+        .anime-detail-info ul {
+            list-style: none;
+            padding: 0.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 0px;
+        }
+
+        .anime-detail-info ul li {
+            padding: 0px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95em;
+        }
+
+        .anime-detail-info ul li span:first-child {
+            font-weight: bold;
+
+        }
+
+        .anime-detail-info ul li span:last-child {
+            color: var(--text-color);
+        }
+
+        .anime-detail-actions {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .watch-now-btn {
+            background-color: blue;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .watch-now-btn:hover {
+            background-color: red;
+        }
+
+        /* Watch Anime Section */
+        .watch-anime-section, .episode-list-section {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 900px;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .watch-anime-section h2, .episode-list-section h2 {
+            color: var(--text-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .watch-anime-section h2::after, .episode-list-section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+
+        .episode-nav {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+
+        }
+        .episode-nav a {
+            font-weight: bold;
+            width: 300px;
+            height: 50px;
+            background-color: rgb(5, 139, 242);
+            color: #f9f6f6;
+            padding: 15px 30px;
+            border-radius: 8px;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+        }
+
+
+        .video-player-placeholder {
+            background-color: #222;
+            height: 400px; /* Increased height for better visibility */
+            width: 100%;
+            border-radius: 8px;
+            display: none; /* Hidden by default */
+            align-items: center;
+            justify-content: center;
+            color: var(--muted-text);
+            font-size: 1.2em;
+        }
+        .video-player-placeholder.active {
+            display: flex; /* Show when active class is added */
+        }
+
+        .episode-list-cards {
+            width: 100%;
+            margin-top: 30px;
+            max-height: 400px; /* Adjust as needed */
+            overflow-y: auto;
+            padding-right: 15px; /* Space for the scrollbar */
+            scrollbar-width: thin; /* Firefox */
+            scrollbar-color: var(--accent) #333; /* Firefox */
+            display: grid;
+            grid-template-columns: 1fr; /* Changed to 1fr */
+            gap: 10px;
+        }
+
+        /* Webkit (Chrome, Safari) scrollbar styles */
+        .episode-list-cards::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .episode-list-cards::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        .episode-list-cards::-webkit-scrollbar-thumb {
+            background-color: var(--accent);
+            border-radius: 4px;
+            border: 2px solid #333;
+        }
+
+
+        .episode-list-item-card {
+            background-color: var(--secondary-bg);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            padding: 8px;
+            display: flex;
+            flex-direction: row; /* Changed to row */
+            align-items: center;
+            gap: 10px; /* Adjust gap as needed */
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            min-height: 50px; /* Adjust minimum height */
+            overflow: hidden;
+            text-align: left; /* Changed to left alignment */
+        }
+
+        .episode-list-item-card:hover {
+            background-color: var(--secondary-bg);
+        }
+
+        .episode-item-image {
+            width: 50px; /* Adjust image width */
+            height: 100%;
+            object-fit: cover;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .episode-item-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align text to the left */
+            justify-content: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            text-align: left; /* Ensure text inside is left-aligned */
+        }
+
+        .episode-item-title {
+            color: var(--text-color);
+            font-size: 0.9em;
+            margin-bottom: 2px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .episode-item-number {
+            color: var(--accent);
+            font-size: 0.8em;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+        /* Responsive adjustments (excluding search results) */
+        @media (max-width: 768px) {
+            .anime-detail-container, .watch-anime-section, .episode-list-section {
+                padding: 15px;
+                margin: 15px auto;
+            }
+            .anime-detail-header h1 {
+                font-size: 1.8em;
+            }
+            .anime-detail-info h2, .watch-anime-section h2, .episode-list-section h2 {
+                font-size: 1.5em;
+            }
+            .anime-detail-info ul {
+                grid-template-columns: 1fr; /* Stack details vertically */
+            }
+            .watch-now-btn {
+                padding: 12px 25px;
+                font-size: 1em;
+            }
+            .episode-nav a {
+                padding: 12px 25px ;
+                font-size: 0.9em;
+            }
+            .episode-list-cards {
+                grid-template-columns: 1fr; /* Changed to 1fr */
+                gap: 8px;
+            }
+            .episode-item-image {
+                height: 60px;
+            }
+            .episode-item-title {
+                font-size: 0.7em;
+            }
+            .episode-item-number {
+                font-size: 0.6em;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .anime-detail-container, .watch-anime-section, .episode-list-section {
+                padding: 10px;
+                margin: 10px auto;
+            }
+            .anime-detail-header h1 {
+                font-size: 1.5em;
+            }
+            .anime-detail-header p {
+                font-size: 0.9em;
+            }
+            .anime-detail-info h2, .watch-anime-section h2, .episode-list-section h2 {
+                font-size: 1.3em;
+            }
+            .anime-detail-info ul li {
+                font-size: 0.9em;
+                padding: 10px;
+            }
+            .watch-now-btn {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+            .episode-list-cards {
+                grid-template-columns: 1fr; /* Changed to 1fr */
+                gap: 6px;
+            }
+            .episode-item-image {
+                height: 50px;
+            }
+            .episode-item-title {
+                font-size: 0.6em;
+            }
+            .episode-item-number {
+                font-size: 0.5em;
+            }
+        }
+        .back-button {
+            width: 118px;
+            background-color: rgb(5, 139, 242);
+            color: #f9f6f6;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 3px;
+            transition: background-color 0.3s ease;
+            align-self: center;
+        }
+
+        .back-button:hover {
+            background-color: red;
+            color: #fff;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <div id="nav-placeholder"></div>
+
+    <div id="mainContent">
+        <div class="anime-detail-container" id="animeDetailContainer">
+            <img src="" alt="Anime Cover" class="anime-detail-cover" id="animeCover">
+
+            <div class="anime-detail-header">
+                <h1 id="animeTitle"></h1>
+                <p id="animeDescription"></p>
+            </div>
+            <p style="text-align: center; color: var(--muted-text);">Loading anime details...</p>
+            <div class="anime-detail-info">
+                <h2>Details</h2>
+                <ul id="animeInfoList">
+                    </ul>
+
+            </div>
+            <div class="anime-detail-actions">
+                <a href="#" class="watch-now-btn">Watch Now</a>
+            </div>
+        </div>
+        <a href="index.html" class="back-button" style="display: block; margin: 15px auto; text-align: center; text-decoration: none; color: inherit;">
+            Back to Home
+        </a>
+    </div>
+    
+      <div id="newSeriesPlaceholder"></div>
+       <div id="genreListPlaceholder"></div>
+    <div class="search-results-section" id="searchResultsSection">
+        <h2></h2>
+        <div class="anime-container" id="searchResultsContainer">
+            </div>
+    </div>
+
+    <div class="watch-anime-section" id="watchAnimeSection" style="display: none;">
+        <h2 id="watchAnimeTitle"></h2>
+        <div class="video-player-placeholder active" id="videoPlayer">
+            <span id="currentEpisodeNumber">Episode: </span>
+            <iframe width="80%" height="360" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+            <p style="color: var(--muted-text);">Video will load here</p>
+        </div>
+        <div class="episode-nav">
+            <a href="#" id="firstEpisodeLink">First Episode (<span id="firstEpisodeNum"></span>)</a>
+            <a href="#" id="lastEpisodeLink">Last Episode (<span id="lastEpisodeNum"></span>)</a>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="components.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const animeTitle = urlParams.get('title');
+            const animeDetailContainer = document.getElementById('animeDetailContainer');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const currentEpisodeNumberDisplay = document.getElementById('currentEpisodeNumber');
+            const watchAnimeSection = document.getElementById('watchAnimeSection');
+            const episodeListSection = document.getElementById('episodeListSection');
+
+            if (animeTitle && typeof allAnimeList !== 'undefined') {
+                const anime = allAnimeList.find(a => a.title === decodeURIComponent(animeTitle));
+                if (anime) {
+                    displayAnimeDetails(anime);
+                    populateEpisodeList(anime.episodes);
+                } else {
+                    if (animeDetailContainer) {
+                        animeDetailContainer.innerHTML = '<p style="text-align: center; color: red; padding: 20px;">Anime not found!</p>';
+                    }
+                    if (watchAnimeSection) watchAnimeSection.style.display = 'none';
+                    if (episodeListSection) episodeListSection.style.display = 'none';
+                }
+            } else {
+                if (animeDetailContainer) {
+                    animeDetailContainer.innerHTML = '<p style="text-align: center; color: red; padding: 20px;">No anime title provided in the URL.</p>';
+                }
+                if (watchAnimeSection) watchAnimeSection.style.display = 'none';
+                if (episodeListSection) episodeListSection.style.display = 'none';
+            }
+        });
+
+        function populateEpisodeList(episodes) {
+                episodeListCards.innerHTML = ''; 
+            const episodeListCards = document.getElementById('episodeListCards');
+            const watchAnimeTitle = document.getElementById('watchAnimeTitle');
+            const animeTitleElement = document.getElementById('animeTitle');
+            const allEpisodesAnimeTitle = animeTitleElement ? animeTitleElement.textContent : '';
+            if (episodeListCards && episodes && episodes.length > 0) {
+                if (watchAnimeTitle) {
+                    watchAnimeTitle.textContent = allEpisodesAnimeTitle;
+                }
+                episodes.forEach(episode => {
+                    const episodeCard = document.createElement('div');
+                    episodeCard.classList.add('episode-list-item-card');
+                    episodeCard.dataset.episodeNumber = episode.episodeNumber; // Store episode number
+
+                    if (episode.thumbnailUrl) {
+                        const image = document.createElement('img');
+                        image.src = episode.thumbnailUrl;
+                        image.alt = `Episode ${episode.episodeNumber} Thumbnail`;
+                        image.classList.add('episode-item-image');
+                        episodeCard.appendChild(image);
+                    }
+
+                    const details = document.createElement('div');
+                    details.classList.add('episode-item-details');
+
+                    const title = document.createElement('h3');
+                    title.classList.add('episode-item-title');
+                    title.textContent = episode.title || `Episode ${episode.episodeNumber}`;
+                    details.appendChild(title);
+
+                    const number = document.createElement('span');
+                    number.classList.add('episode-item-number');
+                    number.textContent = `Episode ${episode.episodeNumber}`;
+                    details.appendChild(number);
+
+                    episodeCard.addEventListener('click', () => {
+                        const videoPlayerSection = document.getElementById('watchAnimeSection');
+                        const episodeNumberDisplay = document.getElementById('currentEpisodeNumber');
+                        if (videoPlayerSection && episodeNumberDisplay) {
+                            episodeNumberDisplay.textContent = `Episode: ${episode.episodeNumber}`;
+                            videoPlayerSection.style.display = 'block';
+                            // Here you would typically load the video for the selected episode
+                            console.log(`Playing episode: ${episode.episodeNumber}`);
+                        }
+                    });
+
+                    episodeCard.appendChild(details);
+                    episodeListCards.appendChild(episodeCard);
+                });
+
+                // Set First and Last Episode links (optional, adjust as needed)
+                const firstEpisodeLink = document.getElementById('firstEpisodeLink');
+                const lastEpisodeLink = document.getElementById('lastEpisodeLink');
+                const firstEpisodeNum = document.getElementById('firstEpisodeNum');
+                const lastEpisodeNum = document.getElementById('lastEpisodeNum');
+
+                if (firstEpisodeLink && lastEpisodeLink && firstEpisodeNum && lastEpisodeNum) {
+                    firstEpisodeLink.href = `#episode-${episodes[0].episodeNumber}`;
+                    firstEpisodeNum.textContent = episodes[0].episodeNumber;
+                    lastEpisodeLink.href = `#episode-${episodes[episodes.length - 1].episodeNumber}`;
+                    lastEpisodeNum.textContent = episodes[episodes.length - 1].episodeNumber;
+                }
+            } else if (episodeListCards) {
+                episodeListCards.innerHTML = '<p>No episodes found for this anime.</p>';
+                const watchAnimeSection = document.getElementById('watchAnimeSection');
+                if (watchAnimeSection) watchAnimeSection.style.display = 'none';
+            }
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Add Anime</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+  <link rel="stylesheet" href="components.css">
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 1200px; margin: auto; }
+    input, textarea, select { width: 100%; padding: 8px; margin-bottom: 10px; }
+    .episode { background: #f9f9f9; padding: 10px; border: 1px solid #ddd; margin-bottom: 10px; }
+    button { padding: 10px 20px; margin: 5px 0; background-color: crimson; color: white; cursor: pointer; }
+
+    /* Spinner on loading buttons */
+    button.loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    button.loading::after {
+      content: '';
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      margin-top: -8px;
+      border: 2px solid white;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+<div id="nav-placeholder"></div>
+
+<h2>Add New Anime</h2>
+<form id="animeForm">
+  <input type="text" id="title" placeholder="Anime Title" required>
+  <input type="text" id="img" placeholder="Image URL" required>
+  <input type="number" id="totalEpisodes" placeholder="Total Episodes" required>
+  <input type="text" id="genre" placeholder="Genres (comma separated)" required>
+  <input type="text" id="releaseDate" placeholder="Release Date (e.g., 22 Mar 2024)" required>
+  <textarea id="description" placeholder="Description" required></textarea>
+
+  <h3>Episodes</h3>
+  <div id="episodesContainer"></div>
+  <button type="button" onclick="addEpisode()">➕ Add Episode</button><br><br>
+  <button type="submit" id="addAnimeBtn">📥 Add Anime</button>
+</form>
+
+<p id="message"></p>
+<hr>
+
+<h2>Update Existing Anime</h2>
+<select id="animeSelector">
+  <option value="">-- Select Anime to Update --</option>
+</select>
+<button type="button" id="deleteAnimeBtn" style="background-color: darkred;">🗑️ Delete Anime</button>
+<span id="deleteLoader" style="display: none;"><i class="fas fa-spinner fa-spin"></i> Deleting...</span>
+
+<form id="updateForm" style="display: none;">
+  <input type="text" id="u_title" placeholder="Anime Title" required>
+  <input type="text" id="u_img" placeholder="Image URL" required>
+  <input type="number" id="u_totalEpisodes" placeholder="Total Episodes" required>
+  <input type="text" id="u_genre" placeholder="Genres (comma separated)" required>
+  <input type="text" id="u_releaseDate" placeholder="Release Date" required>
+  <textarea id="u_description" placeholder="Description" required></textarea>
+
+  <h3>Episodes</h3>
+  <div id="u_episodesContainer"></div>
+  <button type="button" onclick="addUpdateEpisode()">➕ Add Episode</button><br><br>
+  <button type="submit" id="updateAnimeBtn">💾 Update Anime</button>
+</form>
+
+<p id="updateMessage"></p>
+<div id="footer-placeholder"></div>
+
+<script src="components.js"></script>
+<script>
+  // Get the current timestamp in ISO format
+  function getNowISO() {
+    return new Date().toISOString();
+  }
+
+  // Attach delete listeners to all "❌ Delete" buttons
+  function attachDeleteListeners(container) {
+    container.querySelectorAll(".removeBtn").forEach(btn => {
+      btn.onclick = () => {
+        btn.parentElement.remove();
+        renumberEpisodes(container);
+      };
+    });
+  }
+
+  // Recalculate episode titles after renumbering or editing
+  function renumberEpisodes(container) {
+    attachNumberListeners(container);
+  }
+
+  // Add a new episode block in the Add Anime form
+  function addEpisode() {
+    const container = document.getElementById("episodesContainer");
+    const epNum = container.querySelectorAll(".episode").length + 1;
+    const title = document.getElementById("title").value || "Episode";
+
+    const div = document.createElement("div");
+    div.className = "episode";
+    div.innerHTML = `
+      <input type="number" value="${epNum}" class="epNum">
+      <input type="text" value="${title} - Ep ${epNum}" class="epTitle" readonly>
+      <input type="text" placeholder="Video URL" class="epVideo" required>
+      <button type="button" class="removeBtn">❌ Delete</button>
+      <hr>
+    `;
+    container.appendChild(div);
+    attachDeleteListeners(container);
+    attachNumberListeners(container);
+  }
+
+  // Add a new episode block in the Update Anime form
+  function addUpdateEpisode() {
+    const container = document.getElementById("u_episodesContainer");
+    const epNum = container.querySelectorAll(".episode").length + 1;
+    const title = document.getElementById("u_title").value || "Episode";
+
+    const div = document.createElement("div");
+    div.className = "episode";
+    div.innerHTML = `
+      <input type="number" value="${epNum}" class="epNum">
+      <input type="text" value="${title} - Ep ${epNum}" class="epTitle" readonly>
+      <input type="text" placeholder="Video URL" class="epVideo" required>
+      <button type="button" class="removeBtn">❌ Delete</button>
+      <hr>
+    `;
+    container.appendChild(div);
+    attachDeleteListeners(container);
+    attachNumberListeners(container);
+  }
+
+  // Check for duplicate episode numbers before submit
+  function hasDuplicateEpisodes(episodes) {
+    const seen = new Set();
+    for (let ep of episodes) {
+      if (seen.has(ep.episodeNum)) return true;
+      seen.add(ep.episodeNum);
+    }
+    return false;
+  }
+
+  // Show or hide loading spinner on a button
+  function setLoading(button, isLoading) {
+    if (isLoading) {
+      button.classList.add("loading");
+      button.disabled = true;
+    } else {
+      button.classList.remove("loading");
+      button.disabled = false;
+    }
+  }
+
+  // Handle form submission for adding a new anime
+  document.getElementById("animeForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const addBtn = document.getElementById("addAnimeBtn");
+    setLoading(addBtn, true);
+
+    const episodes = Array.from(document.querySelectorAll("#episodesContainer .episode")).map(ep => ({
+      episodeNum: parseInt(ep.querySelector(".epNum").value),
+      title: ep.querySelector(".epTitle").value,
+      videoUrl: ep.querySelector(".epVideo").value,
+      imageUrl: document.getElementById("img").value,
+      updatedAt: getNowISO()
+    }));
+
+    if (hasDuplicateEpisodes(episodes)) {
+      alert("Duplicate episode numbers found. Please fix before submitting.");
+      setLoading(addBtn, false);
+      return;
+    }
+
+    const newAnime = {
+      title: document.getElementById("title").value,
+      imageUrl: document.getElementById("img").value,
+      totalEpisodes: parseInt(document.getElementById("totalEpisodes").value),
+      genre: document.getElementById("genre").value.split(",").map(g => g.trim()),
+      releaseDate: document.getElementById("releaseDate").value,
+      description: document.getElementById("description").value,
+      episodes
+    };
+
+    try {
+      const res = await fetch("http://localhost:3000/anime", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newAnime)
+      });
+      const result = await res.json();
+      document.getElementById("message").innerText = result.message || "Anime added successfully!";
+      e.target.reset();
+      document.getElementById("episodesContainer").innerHTML = "";
+      loadAnimeList();
+    } catch (err) {
+      document.getElementById("message").innerText = "Failed: " + err.message;
+    } finally {
+      setLoading(addBtn, false);
+    }
+  });
+
+  // Load selected anime info into the update form
+  document.getElementById("animeSelector").addEventListener("change", async function () {
+    const id = this.value;
+    if (!id) return;
+    try {
+      const res = await fetch(`http://localhost:3000/anime/${id}`);
+      const anime = await res.json();
+
+      document.getElementById("updateForm").style.display = "block";
+      document.getElementById("u_title").value = anime.title;
+      document.getElementById("u_img").value = anime.img || anime.imageUrl;
+      document.getElementById("u_totalEpisodes").value = anime.totalEpisodes;
+      document.getElementById("u_genre").value = anime.genre.join(", ");
+      document.getElementById("u_releaseDate").value = anime.releaseDate;
+      document.getElementById("u_description").value = anime.description;
+
+      const container = document.getElementById("u_episodesContainer");
+      container.innerHTML = "";
+      anime.episodes.forEach(ep => {
+        const div = document.createElement("div");
+        div.className = "episode";
+        div.innerHTML = `
+          <input type="number" value="${ep.episodeNum}" class="epNum" readonly>
+          <input type="text" value="${ep.title}" class="epTitle" readonly>
+          <input type="text" value="${ep.videoUrl}" class="epVideo" required>
+          <button type="button" class="removeBtn">❌ Delete</button>
+          <hr>
+        `;
+        container.appendChild(div);
+      });
+      attachDeleteListeners(container);
+    } catch (err) {
+      document.getElementById("updateMessage").innerText = "Failed: " + err.message;
+    }
+  });
+
+  // Handle update anime form submission
+  document.getElementById("updateForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const updateBtn = document.getElementById("updateAnimeBtn");
+    setLoading(updateBtn, true);
+
+    const id = document.getElementById("animeSelector").value;
+    const episodes = Array.from(document.querySelectorAll("#u_episodesContainer .episode")).map(ep => ({
+      episodeNum: parseInt(ep.querySelector(".epNum").value),
+      title: ep.querySelector(".epTitle").value,
+      videoUrl: ep.querySelector(".epVideo").value,
+      imageUrl: document.getElementById("u_img").value,
+      updatedAt: getNowISO()
+    }));
+
+    if (hasDuplicateEpisodes(episodes)) {
+      alert("Duplicate episode numbers found. Please fix before updating.");
+      setLoading(updateBtn, false);
+      return;
+    }
+
+    const updatedAnime = {
+      title: document.getElementById("u_title").value,
+      img: document.getElementById("u_img").value,
+      totalEpisodes: parseInt(document.getElementById("u_totalEpisodes").value),
+      genre: document.getElementById("u_genre").value.split(",").map(g => g.trim()),
+      releaseDate: document.getElementById("u_releaseDate").value,
+      description: document.getElementById("u_description").value,
+      episodes
+    };
+
+    try {
+      const res = await fetch(`http://localhost:3000/anime/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedAnime)
+      });
+      const result = await res.json();
+      document.getElementById("updateMessage").innerText = result.message || "Anime updated!";
+    } catch (err) {
+      document.getElementById("updateMessage").innerText = "Update failed: " + err.message;
+    } finally {
+      setLoading(updateBtn, false);
+    }
+  });
+
+  // Handle delete anime button click
+  document.getElementById("deleteAnimeBtn").addEventListener("click", async () => {
+    const id = document.getElementById("animeSelector").value;
+    if (!id) return alert("Please select an anime to delete.");
+    if (!confirm("Are you sure you want to delete this anime?")) return;
+
+    const btn = document.getElementById("deleteAnimeBtn");
+    setLoading(btn, true);
+    try {
+      const res = await fetch(`http://localhost:3000/anime/${id}`, {
+        method: "DELETE"
+      });
+      const result = await res.json();
+      alert(result.message || "Anime deleted.");
+      document.getElementById("updateForm").style.display = "none";
+      loadAnimeList();
+    } catch (err) {
+      alert("Delete failed: " + err.message);
+    } finally {
+      setLoading(btn, false);
+    }
+  });
+
+  // Load all anime into the dropdown selector
+  async function loadAnimeList() {
+    try {
+      const res = await fetch("http://localhost:3000/anime");
+      const animeList = await res.json();
+
+      const selector = document.getElementById("animeSelector");
+      selector.innerHTML = '<option value="">-- Select Anime to Update --</option>';
+      animeList.forEach(anime => {
+        const opt = document.createElement("option");
+        opt.value = anime.id;
+        opt.textContent = anime.title;
+        selector.appendChild(opt);
+      });
+    } catch (err) {
+      console.error("Error loading list", err);
+    }
+  }
+
+  // Update episode title when episode number is changed
+  function attachNumberListeners(container) {
+    container.querySelectorAll(".epNum").forEach((input, index) => {
+      input.addEventListener("input", () => {
+        const epTitleInput = container.querySelectorAll(".epTitle")[index];
+        const titleInput = container.id === "u_episodesContainer"
+          ? document.getElementById("u_title")
+          : document.getElementById("title");
+        const title = titleInput.value || "Episode";
+        const epNum = input.value || index + 1;
+        epTitleInput.value = `${title} - Ep ${epNum}`;
+      });
+    });
+  }
+
+  // Auto update episode titles if main title changes
+  document.getElementById("title").addEventListener("input", () => {
+    renumberEpisodes(document.getElementById("episodesContainer"));
+  });
+
+  document.getElementById("u_title").addEventListener("input", () => {
+    renumberEpisodes(document.getElementById("u_episodesContainer"));
+  });
+
+  // Initialize dropdown with existing anime
+  loadAnimeList();
+</script>
+
+</body>
+</html>
