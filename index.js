@@ -1,13 +1,17 @@
 const express = require("express");
+const cors = require("cors"); 
 const fs = require("fs");
 const path = require("path");
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ Also update for Render deployment
+
 
 const DATA_PATH = path.join(__dirname, "data", "animeList.json");
 
+app.use(cors());             
 app.use(express.json());
 app.use(express.static("public"));
+
 
 // Ensure file exists
 if (!fs.existsSync(DATA_PATH)) {
