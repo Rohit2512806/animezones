@@ -88,6 +88,11 @@
 
 <script src="components.js"></script>
 <script>
+   const password = prompt("Enter admin password:");
+  if (password !== "74Rohit58.") {
+    alert("Access denied");
+    window.location.href = "/";
+  }
   // Get the current timestamp in ISO format
   function getNowISO() {
     return new Date().toISOString();
@@ -200,7 +205,7 @@
     };
 
     try {
-      const res = await fetch("http://localhost:3000/anime", {
+      const res = await fetch("https://animezones-1.onrender.com/anime", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAnime)
@@ -222,7 +227,7 @@
     const id = this.value;
     if (!id) return;
     try {
-      const res = await fetch(`http://localhost:3000/anime/${id}`);
+      const res = await fetch(`https://animezones-1.onrender.com/anime/${id}`);
       const anime = await res.json();
 
       document.getElementById("updateForm").style.display = "block";
@@ -285,7 +290,7 @@
     };
 
     try {
-      const res = await fetch(`http://localhost:3000/anime/${id}`, {
+      const res = await fetch(`https://animezones-1.onrender.com/anime/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedAnime)
@@ -308,7 +313,7 @@
     const btn = document.getElementById("deleteAnimeBtn");
     setLoading(btn, true);
     try {
-      const res = await fetch(`http://localhost:3000/anime/${id}`, {
+      const res = await fetch(`https://animezones-1.onrender.com/anime/${id}`, {
         method: "DELETE"
       });
       const result = await res.json();
@@ -325,7 +330,7 @@
   // Load all anime into the dropdown selector
   async function loadAnimeList() {
     try {
-      const res = await fetch("http://localhost:3000/anime");
+      const res = await fetch("https://animezones-1.onrender.com/anime");
       const animeList = await res.json();
 
       const selector = document.getElementById("animeSelector");

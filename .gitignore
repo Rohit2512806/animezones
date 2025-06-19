@@ -1,0 +1,12 @@
+# node_modules को ignore करो (dependencies हैं, दोबारा install हो सकते हैं)
+node_modules/
+
+# .env file को ignore करो (इसमें secrets होते हैं, जैसे Mongo URI)
+.env
+
+# logs (optional)
+*.log
+
+# OS/system specific files (optional safety)
+.DS_Store
+Thumbs.db

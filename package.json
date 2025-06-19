@@ -10,6 +10,17 @@
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0"
-  }
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongodb": "^6.17.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rohit2512806/animezones.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Rohit2512806/animezones/issues"
+  },
+  "homepage": "https://github.com/Rohit2512806/animezones#readme"
 }

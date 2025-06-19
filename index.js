@@ -1,49 +1,39 @@
+require("dotenv").config();
 const express = require("express");
-const cors = require("cors"); 
-const fs = require("fs");
-const path = require("path");
+const cors = require("cors");
+const { MongoClient } = require("mongodb");
+
 const app = express();
-const PORT = process.env.PORT || 3000; // ✅ Also update for Render deployment
+const PORT = process.env.PORT || 3000;
+const client = new MongoClient(process.env.MONGO_URI);
 
+let animeCollection;
 
-const DATA_PATH = path.join(__dirname, "data", "animeList.json");
-
-app.use(cors());             
+app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-
-// Ensure file exists
-if (!fs.existsSync(DATA_PATH)) {
-  fs.mkdirSync(path.dirname(DATA_PATH), { recursive: true });
-  fs.writeFileSync(DATA_PATH, "[]");
-}
-
-// Home
 app.get("/", (req, res) => {
-  res.send("Welcome to Anime Backend API");
+  res.send("Welcome to Anime Backend API (MongoDB Version)");
 });
 
-// Get all anime
-app.get("/anime", (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DATA_PATH));
-
-  // ✅ Sort by latest episode updatedAt (descending)
-  const sorted = data.sort((a, b) => {
-    const aUpdated = a.episodes?.[a.episodes.length - 1]?.updatedAt || "1970-01-01T00:00:00Z";
-    const bUpdated = b.episodes?.[b.episodes.length - 1]?.updatedAt || "1970-01-01T00:00:00Z";
-    return new Date(bUpdated) - new Date(aUpdated);
-  });
-
-  res.json(sorted);
+app.get("/anime", async (req, res) => {
+  try {
+    const allAnime = await animeCollection.find({}).toArray();
+    const sorted = allAnime.sort((a, b) => {
+      const aUpdated = a.episodes?.[a.episodes.length - 1]?.updatedAt || "1970-01-01T00:00:00Z";
+      const bUpdated = b.episodes?.[b.episodes.length - 1]?.updatedAt || "1970-01-01T00:00:00Z";
+      return new Date(bUpdated) - new Date(aUpdated);
+    });
+    res.json(sorted);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch anime." });
+  }
 });
 
-
-// Get anime by ID
-app.get("/anime/:id", (req, res) => {
+app.get("/anime/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  const data = JSON.parse(fs.readFileSync(DATA_PATH));
-  const anime = data.find(anime => anime.id === id);
+  const anime = await animeCollection.findOne({ id });
   if (anime) {
     res.json(anime);
   } else {
@@ -51,17 +41,18 @@ app.get("/anime/:id", (req, res) => {
   }
 });
 
-// ✅ POST: Add new anime
-app.post("/anime", (req, res) => {
+app.post("/anime", async (req, res) => {
   const { title, genre, imageUrl, description, releaseDate, totalEpisodes, episodes } = req.body;
 
   if (!title || !genre || !imageUrl || !description || !releaseDate || !totalEpisodes) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
-  const data = JSON.parse(fs.readFileSync(DATA_PATH));
+  const lastAnime = await animeCollection.find().sort({ id: -1 }).limit(1).toArray();
+  const newId = lastAnime.length > 0 ? lastAnime[0].id + 1 : 1;
+
   const newAnime = {
-    id: data.length > 0 ? data[data.length - 1].id + 1 : 1,
+    id: newId,
     title,
     genre,
     img: imageUrl,
@@ -71,14 +62,11 @@ app.post("/anime", (req, res) => {
     episodes: episodes || []
   };
 
-  data.push(newAnime);
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
-
+  await animeCollection.insertOne(newAnime);
   res.json({ message: "Anime added successfully", anime: newAnime });
 });
 
-// ✅ POST: Add episode to existing anime
-app.post("/anime/:id/episodes", (req, res) => {
+app.post("/anime/:id/episodes", async (req, res) => {
   const animeId = parseInt(req.params.id);
   const { episodeNum, title, videoUrl, imageUrl, updatedAt } = req.body;
 
@@ -86,35 +74,29 @@ app.post("/anime/:id/episodes", (req, res) => {
     return res.status(400).json({ error: "Missing episode fields" });
   }
 
-  const data = JSON.parse(fs.readFileSync(DATA_PATH));
-  const anime = data.find(anime => anime.id === animeId);
+  const anime = await animeCollection.findOne({ id: animeId });
+  if (!anime) return res.status(404).json({ error: "Anime not found" });
 
-  if (!anime) {
-    return res.status(404).json({ error: "Anime not found" });
-  }
-
-  // Check for duplicate episode number
-  const existingEp = anime.episodes.find(ep => ep.episodeNum === episodeNum);
-  if (existingEp) {
+  if (anime.episodes.find(ep => ep.episodeNum === episodeNum)) {
     return res.status(400).json({ error: "Episode number already exists" });
   }
 
-  anime.episodes.push({ episodeNum, title, videoUrl, imageUrl, updatedAt });
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
+  await animeCollection.updateOne(
+    { id: animeId },
+    { $push: { episodes: { episodeNum, title, videoUrl, imageUrl, updatedAt } } }
+  );
 
-  res.json({ message: "Episode added successfully", episodes: anime.episodes });
+  res.json({ message: "Episode added successfully" });
 });
 
-app.put("/anime/:id", (req, res) => {
+app.put("/anime/:id", async (req, res) => {
   const animeId = parseInt(req.params.id);
   const updatedData = req.body;
 
-  // Basic field check
   if (!updatedData.title || !updatedData.img || !updatedData.description) {
     return res.status(400).json({ error: "Missing fields" });
   }
 
-  // ✅ Duplicate episode number check
   if (updatedData.episodes) {
     const nums = updatedData.episodes.map(ep => ep.episodeNum);
     const duplicates = nums.filter((num, i) => nums.indexOf(num) !== i);
@@ -123,36 +105,37 @@ app.put("/anime/:id", (req, res) => {
     }
   }
 
-  const data = JSON.parse(fs.readFileSync(DATA_PATH));
-  const index = data.findIndex(anime => anime.id === animeId);
+  await animeCollection.updateOne(
+    { id: animeId },
+    { $set: { ...updatedData, id: animeId } }
+  );
 
-  if (index === -1) {
-    return res.status(404).json({ error: "Anime not found" });
-  }
-
-  data[index] = { id: animeId, ...updatedData };
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
-
-  res.json({ message: "Anime updated successfully", anime: data[index] });
+  res.json({ message: "Anime updated successfully" });
 });
 
-// ✅ DELETE anime by ID
-app.delete("/anime/:id", (req, res) => {
+app.delete("/anime/:id", async (req, res) => {
   const animeId = parseInt(req.params.id);
-  const data = JSON.parse(fs.readFileSync(DATA_PATH));
+  const result = await animeCollection.deleteOne({ id: animeId });
 
-  const index = data.findIndex(anime => anime.id === animeId);
-  if (index === -1) {
+  if (result.deletedCount === 0) {
     return res.status(404).json({ error: "Anime not found" });
   }
-
-  data.splice(index, 1); // remove the anime
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2));
 
   res.json({ message: `Anime with ID ${animeId} deleted successfully.` });
 });
 
-// ✅ Start server
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+async function startServer() {
+  try {
+    await client.connect();
+    const db = client.db("animeDB");
+    animeCollection = db.collection("animes");
+
+    app.listen(PORT, () => {
+      console.log(`✅ Server running at http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error("❌ MongoDB connection failed", err);
+  }
+}
+
+startServer();

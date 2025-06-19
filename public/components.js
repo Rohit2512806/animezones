@@ -699,7 +699,7 @@ function setupEpisodeNavigation(anime, currentEpNum) {
 }
 
 // --- Main Data Fetch and Page-Specific Logic ---
-fetch('https://animezones-64tp.onrender.com/anime')
+fetch('https://animezones-1.onrender.com/anime')
 
     .then(response => {
         if (!response.ok) {
