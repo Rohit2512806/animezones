@@ -6,23 +6,6 @@
   <title>AnimeSub - Privacy Policy</title> <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="components.css"> <style>
-    /* --- General & Theme Styles (common, so can remain or move to components.css) --- */
-    :root {
-      --bg-color: #111;
-      --text-color: #fff;
-      --card-bg: #222;
-      --accent: #00ffcc;
-      --muted-text: #666;
-      --border-color: #444; /* Added for list items */
-    }
-
-    body.light {
-      --bg-color: #f0f0f0;
-      --text-color: #111;
-      --card-bg: #fff;
-      --muted-text: #888;
-      --border-color: #ddd;
-    }
 
     body {
       font-family: Arial, sans-serif;
@@ -38,9 +21,9 @@
         background-color: var(--card-bg);
         padding: 2rem;
         border-radius: 12px;
-        max-width: 800px;
+        max-width: auto;
         width: 90%; /* Responsive width */
-        box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+        box-shadow: 0 0 15px rgba(0, 11, 9, 0.1);
         margin: 2rem auto; /* Center with top/bottom margin */
         display: block; /* Default to visible when page loads, then controlled by JS */
         box-sizing: border-box;
@@ -164,14 +147,9 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
         applySavedTheme();
-        // searchResultsSection और privacyContainer की डिस्प्ले को कंट्रोल करने का लॉजिक
-        // अब components.js में होना चाहिए।
-        // यहां सिर्फ initial state सेट कर सकते हैं, या components.js को ही करने दें।
         const searchResultsSection = document.getElementById('searchResultsSection');
         const privacyContainer = document.getElementById('privacyContainer'); // Corrected ID
         const mainContent = document.getElementById('mainContent');
-
-        // जब पेज लोड हो, तो सर्च रिजल्ट सेक्शन छिपा हो और प्राइवेसी कंटेंट दिख रहा हो
         searchResultsSection.style.display = 'none';
         if (privacyContainer) {
             privacyContainer.style.display = 'block';

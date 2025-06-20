@@ -75,7 +75,7 @@ body {
 }
 
 .anime-card {
-      width: 410px;
+      width: 1150px;
       height: 5rem;
       display: flex;
       flex-direction: row;
@@ -135,7 +135,7 @@ text-align: left;
     -webkit-box-orient: vertical;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .anime-card {
      align-items: flex-start;
     text-align: left;
@@ -173,14 +173,13 @@ text-align: left;
         </div>
       </div>
   </div>
-  <div id="newSeriesPlaceholder"></div>
-  <div id="genreListPlaceholder"></div>
-  <div class="search-results-section" id="searchResultsSection">
+    <div class="search-results-section" id="searchResultsSection">
     <h2></h2>
     <div class="anime-container" id="searchResultsContainer">
         </div>
   </div>
-
+  <div id="newSeriesPlaceholder"></div>
+  <div id="genreListPlaceholder"></div>
   <div id="footer-placeholder"></div>
 
   <script src="components.js"></script>
@@ -285,12 +284,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ✅ Wait until window.allAnimeList is available
-    const waitForData = setInterval(() => {
-        if (window.allAnimeList) {
-            clearInterval(waitForData);
-            initAtoZPage();
-        }
-    }, 100); // check every 100ms
+ const waitForData = setInterval(() => {
+    if (Array.isArray(window.allAnimeList) && window.allAnimeList.length > 0) {
+        clearInterval(waitForData);
+        initAtoZPage();
+    }
+}, 100);
+
 });
 </script>
 </body>

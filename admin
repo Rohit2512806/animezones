@@ -14,3 +14,12 @@ https://www.dailymotion.com/video/x9k9svs
 //dailymotion url video id
 
 https://www.dailymotion.com/video/
+
+
+git add .
+git commit -m "✏️ Updated something"
+git push
+
+
+
+MONGO_URI=mongodb+srv://rohitpatel2512806:74Rohit58@cluster0.bh9vumk.mongodb.net/animeDB?retryWrites=true&w=majority&appName=Cluster0 

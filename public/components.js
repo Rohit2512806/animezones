@@ -709,7 +709,7 @@ fetch('https://animezones-1.onrender.com/anime')
     })
     .then(data => {
         window.allAnimeList = data; // Store in global variable
-
+        
         const currentPagePath = window.location.pathname;
 
         // --- Logic for index.html ---
@@ -771,6 +771,7 @@ fetch('https://animezones-1.onrender.com/anime')
                 }
             }
         }
+        
 
     })
     .catch(error => {
@@ -899,6 +900,7 @@ function filterAnime() {
     if (searchText.length > 0) {
         mainContent.style.display = 'none';
         searchResultsSection.style.display = 'block';
+        searchResultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         searchResultsSection.querySelector('h2').textContent = `Search Results for "${searchText}"`;
         searchResultsContainer.innerHTML = '';
         if (allAnimePagination) allAnimePagination.style.display = 'none';
@@ -1010,7 +1012,6 @@ window.filterAnimeByGenre = function(selectedGenre) {
         searchResultsContainer.innerHTML = `<p style="color: var(--muted-text); text-align: center; padding: 20px;">No anime found for genre: "${selectedGenre}".</p>`;
     }
 };
-
 
 // --- Setup Functions to attach Event Listeners ---
 function setupSearchFunctionality() {
