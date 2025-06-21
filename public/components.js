@@ -405,52 +405,90 @@ function prevPage() {
 // Anime Detail page: Display anime details
 function displayAnimeDetails(anime) {
     const container = document.getElementById('animeDetailContainer');
-    if (!container) {
-        return;
-    }
+    if (!container) return;
 
+    // Inject HTML including anime-info-card block
     container.innerHTML = `
         <div class="anime-detail-header">
-          <h1>${anime.title}</h1>
-          <p>${anime.description || 'No description available.'}</p>
+            <h1>${anime.title}</h1>
+            <p>${anime.description || 'No description available.'}</p>
         </div>
 
         <div class="anime-detail-info">
-          <h2>Details</h2>
-          <ul>
-            <li><span>Status:</span> ${getAnimeStatus(anime.title)}</li>
-            <li><span>Type:</span> ${anime.type || 'N/A'}</li>
-            <li><span>Episodes:</span> ${anime.totalEpisodes || 'N/A'}</li>
-            <li><span>Genre:</span> ${Array.isArray(anime.genre) ? anime.genre.join(', ') : (anime.genre || 'N/A')}</li>
-            <li><span>Release Date:</span> ${anime.releaseDate || 'N/A'}</li>
-          </ul>
+            <h2>Details</h2>
+            <ul>
+                <li><span>Status:</span> ${getAnimeStatus(anime.title)}</li>
+                <li><span>Type:</span> ${anime.type || 'N/A'}</li>
+                <li><span>Episodes:</span> ${anime.totalEpisodes || 'N/A'}</li>
+                <li><span>Genre:</span> ${Array.isArray(anime.genre) ? anime.genre.join(', ') : (anime.genre || 'N/A')}</li>
+                <li><span>Release Date:</span> ${anime.releaseDate || 'N/A'}</li>
+            </ul>
         </div>
+
         <div class="anime-detail-actions">
-          <a href="video-player.html?title=${encodeURIComponent(anime.title)}&ep=${anime.episodes && anime.episodes.length > 0 ? anime.episodes[0].episodeNum : 1}" class="watch-now-btn">
-            Watch Now (First Episode)
-          </a>
+            <a href="video-player.html?title=${encodeURIComponent(anime.title)}&ep=${anime.episodes && anime.episodes.length > 0 ? anime.episodes[0].episodeNum : 1}" class="watch-now-btn">
+                Watch Now (First Episode)
+            </a>
         </div>
+
         <section class="watch-anime-section">
-          <h2 class="section-title">All Episodes ${anime.title}</h2>
-          <div class="episode-nav">
-            <a href="#" id="firstEpisodeLink">First Episode</a>
-            <a href="#" id="lastEpisodeLink">Last Episode</a>
-          </div>
-        </section>
-        <section class="episode-list-section">
-          <div class="episode-list-cards" id="episodeListCards">
+            <h2 class="section-title">All Episodes ${anime.title}</h2>
+            <div class="episode-nav">
+                <a href="#" id="firstEpisodeLink">First Episode</a>
+                <a href="#" id="lastEpisodeLink">Last Episode</a>
             </div>
         </section>
+                 <div class="anime-info-card">
+            <img id="animeInfoImage" class="anime-info-image" src="" alt="Anime Image" />
+            <div class="anime-info-details">
+                <h4 id="animeInfoTitle">Anime Title</h4>
+                <span id="animeInfoStatus" class="anime-status">Status: Ongoing</span>
+                <p id="animeInfoEpisodes">Total Episodes: ...</p>
+            </div>
+        </div>
+        <section class="episode-list-section">
+            <div class="episode-list-cards" id="episodeListCards"></div>
+        </section>
+        
     `;
 
+    // 🟢 Update Anime Info Box
+    document.getElementById('animeInfoImage').src = anime.img || 'default.jpg';
+    document.getElementById('animeInfoTitle').textContent = anime.title || 'Untitled';
+    document.getElementById('animeInfoEpisodes').textContent = `Total Episodes: ${anime.episodes?.length || 0}`;
+
+   const statusElem = document.getElementById('animeInfoStatus');
+
+// Episode numbers
+const episodeNums = anime.episodes?.map(ep => ep.episodeNum || 0) || [];
+const lastEpNum = Math.max(...episodeNums, 0);
+
+// totalEpisodes parse karo
+let totalCount = parseInt(anime.totalEpisodes);
+if (isNaN(totalCount) || totalCount === 0) {
+    totalCount = 0; // agar unknown ya invalid ho to treat as unknown
+}
+
+// Status logic
+let status = 'Ongoing';
+if (totalCount > 0 && lastEpNum === totalCount) {
+    status = 'Completed';
+}
+
+statusElem.textContent = `Status: ${status}`;
+statusElem.classList.remove('status-ongoing', 'status-completed');
+statusElem.classList.add(status === 'Completed' ? 'status-completed' : 'status-ongoing');
+
+
+    // Prepend cover image
     const animeCoverImg = document.createElement('img');
     animeCoverImg.src = anime.img;
     animeCoverImg.alt = `${anime.title} Cover`;
     animeCoverImg.className = 'anime-detail-cover';
     animeCoverImg.id = 'animeCoverImg';
+    container.prepend(animeCoverImg);
 
-    container.prepend(animeCoverImg); // Prepend the cover image
-
+    // Load Episodes
     const episodeListCards = document.getElementById('episodeListCards');
     const firstEpisodeLink = document.getElementById('firstEpisodeLink');
     const lastEpisodeLink = document.getElementById('lastEpisodeLink');
@@ -495,16 +533,17 @@ function displayAnimeDetails(anime) {
             firstEpisodeLink.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${anime.episodes[0].episodeNum}`;
             firstEpisodeLink.textContent = `First Episode ${anime.episodes[0].episodeNum}`;
         }
+
         if (lastEpisodeLink) {
             const lastEp = anime.episodes[anime.episodes.length - 1];
             lastEpisodeLink.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${lastEp.episodeNum}`;
             lastEpisodeLink.textContent = `Last Episode ${lastEp.episodeNum}`;
         }
-
     } else if (episodeListCards) {
         episodeListCards.innerHTML = '<p style="color: var(--muted-text); text-align: center;">No episodes available for this anime.</p>';
     }
 }
+
 
 
 // Video Player page: Display video player and episode list
@@ -726,6 +765,8 @@ fetch('https://animezones-64tp.onrender.com/anime')
             filteredAnimeList = [...data];
             displayCurrentPage(filteredAnimeList);
             setupAllAnimePageListeners();
+            loadNewSeriesSection();
+            loadGenreSection();
         }
         // --- Logic for anime-detail.html ---
         else if (currentPagePath.includes('anime-detail.html')) {
@@ -747,6 +788,8 @@ fetch('https://animezones-64tp.onrender.com/anime')
                         detailContainer.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Sorry, no anime selected to display details.</p>';
                     }
             }
+            loadNewSeriesSection();
+            loadGenreSection();
         }
         // --- Logic for video-player.html ---
         else if (currentPagePath.includes('video-player.html')) {
@@ -770,6 +813,8 @@ fetch('https://animezones-64tp.onrender.com/anime')
                     videoPlayerSection.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Please select an anime episode to watch.</p>';
                 }
             }
+            loadNewSeriesSection();
+            loadGenreSection();
         }
         
 
