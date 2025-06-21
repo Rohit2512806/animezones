@@ -205,7 +205,7 @@
     };
 
     try {
-      const res = await fetch("https://animezones-1.onrender.com/anime", {
+      const res = await fetch('https://animezones-64tp.onrender.com/anime', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAnime)
@@ -227,7 +227,7 @@
     const id = this.value;
     if (!id) return;
     try {
-      const res = await fetch(`https://animezones-1.onrender.com/anime/${id}`);
+      const res = await fetch(`https://animezones-64tp.onrender.com/anime/${id}`);
       const anime = await res.json();
 
       document.getElementById("updateForm").style.display = "block";
@@ -288,9 +288,9 @@
       description: document.getElementById("u_description").value,
       episodes
     };
-
+fetch('')
     try {
-      const res = await fetch(`https://animezones-1.onrender.com/anime/${id}`, {
+      const res = await fetch(`https://animezones-64tp.onrender.com/anime/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedAnime)
@@ -313,7 +313,7 @@
     const btn = document.getElementById("deleteAnimeBtn");
     setLoading(btn, true);
     try {
-      const res = await fetch(`https://animezones-1.onrender.com/anime/${id}`, {
+      const res = await fetch(`https://animezones-64tp.onrender.com/anime/${id}`, {
         method: "DELETE"
       });
       const result = await res.json();
@@ -330,7 +330,7 @@
   // Load all anime into the dropdown selector
   async function loadAnimeList() {
     try {
-      const res = await fetch("https://animezones-1.onrender.com/anime");
+      fetch('https://animezones-64tp.onrender.com/anime')
       const animeList = await res.json();
 
       const selector = document.getElementById("animeSelector");
