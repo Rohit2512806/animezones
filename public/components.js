@@ -816,8 +816,10 @@ fetch('https://animezones-64tp.onrender.com/anime')
             loadNewSeriesSection();
             loadGenreSection();
         }
-        
-
+         else if (currentPagePath.includes('list.html')) {
+          loadNewSeriesSection();
+            loadGenreSection();  
+         }
     })
     .catch(error => {
         const mainContent = document.getElementById('mainContent'); // Fallback for any page
