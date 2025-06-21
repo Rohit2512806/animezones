@@ -13,27 +13,41 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
+/**
+ * Root route to confirm API is working
+ */
 app.get("/", (req, res) => {
   res.send("Welcome to Anime Backend API (MongoDB Version)");
 });
 
+/**
+ * Get all anime - sorted by latest updated episode
+ * Also removes _id from MongoDB documents
+ */
 app.get("/anime", async (req, res) => {
   try {
-    const allAnime = await animeCollection.find({}).toArray();
+    const allAnime = await animeCollection
+      .find({}, { projection: { _id: 0 } })  // ⛔ Remove MongoDB's _id
+      .toArray();
+
     const sorted = allAnime.sort((a, b) => {
       const aUpdated = a.episodes?.[a.episodes.length - 1]?.updatedAt || "1970-01-01T00:00:00Z";
       const bUpdated = b.episodes?.[b.episodes.length - 1]?.updatedAt || "1970-01-01T00:00:00Z";
       return new Date(bUpdated) - new Date(aUpdated);
     });
+
     res.json(sorted);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch anime." });
   }
 });
 
+/**
+ * Get one anime by ID - removes _id
+ */
 app.get("/anime/:id", async (req, res) => {
   const id = parseInt(req.params.id);
-  const anime = await animeCollection.findOne({ id });
+  const anime = await animeCollection.findOne({ id }, { projection: { _id: 0 } }); // ⛔ Remove _id
   if (anime) {
     res.json(anime);
   } else {
@@ -41,6 +55,9 @@ app.get("/anime/:id", async (req, res) => {
   }
 });
 
+/**
+ * Add a new anime
+ */
 app.post("/anime", async (req, res) => {
   const { title, genre, imageUrl, description, releaseDate, totalEpisodes, episodes } = req.body;
 
@@ -66,6 +83,9 @@ app.post("/anime", async (req, res) => {
   res.json({ message: "Anime added successfully", anime: newAnime });
 });
 
+/**
+ * Add a new episode to a specific anime
+ */
 app.post("/anime/:id/episodes", async (req, res) => {
   const animeId = parseInt(req.params.id);
   const { episodeNum, title, videoUrl, imageUrl, updatedAt } = req.body;
@@ -89,6 +109,9 @@ app.post("/anime/:id/episodes", async (req, res) => {
   res.json({ message: "Episode added successfully" });
 });
 
+/**
+ * Update an existing anime by ID
+ */
 app.put("/anime/:id", async (req, res) => {
   const animeId = parseInt(req.params.id);
   const updatedData = req.body;
@@ -113,6 +136,9 @@ app.put("/anime/:id", async (req, res) => {
   res.json({ message: "Anime updated successfully" });
 });
 
+/**
+ * Delete an anime by ID
+ */
 app.delete("/anime/:id", async (req, res) => {
   const animeId = parseInt(req.params.id);
   const result = await animeCollection.deleteOne({ id: animeId });
@@ -124,6 +150,9 @@ app.delete("/anime/:id", async (req, res) => {
   res.json({ message: `Anime with ID ${animeId} deleted successfully.` });
 });
 
+/**
+ * Connect to MongoDB and start the server
+ */
 async function startServer() {
   try {
     await client.connect();

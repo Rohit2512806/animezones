@@ -339,7 +339,7 @@ async function loadAnimeList() {
     selector.innerHTML = '<option value="">-- Select Anime to Update --</option>';
     animeList.forEach(anime => {
       const opt = document.createElement("option");
-      opt.value = anime._id || anime.id;
+      opt.value = anime.id;
       opt.textContent = anime.title;
       selector.appendChild(opt);
     });
