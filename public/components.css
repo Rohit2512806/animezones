@@ -272,7 +272,7 @@ nav a:hover {
   background: linear-gradient(135deg, #ff4d4f, hwb(0 1% 61%));
   color: white;
   border: none;
-  border-radius: 6px 0px 13px 0px;
+  border-radius: 0px 13px 0px 10px;
   padding: 6px 6px;
   font-size: 12px;
    font-weight: bold;
@@ -288,7 +288,7 @@ nav a:hover {
   background: linear-gradient(135deg, #ff4d4f, hwb(0 1% 61%));
   color: white;
   border: none;
-  border-radius: 6px 0px 10px 0px;
+  border-radius: 0px 13px 0px 10px;
   padding: 5px 5px;
   font-size: 12px;
    font-weight: bold;
@@ -299,20 +299,21 @@ nav a:hover {
   }
 /* 🔥 Fire icon style */
 .fire-icon {
+ display: flex;
+  justify-content: center;  
+  align-items: center; 
   position: absolute;
   top: 5px;
-  left: 8px;
+  left: 0px;
   width: 25px;
   height: 25px;
-  background-color: lch(93.09% 92.71 102.91);
-  border-radius: 50%;
-  font-size: 18px;
+  color: white;
+  background: linear-gradient(135deg, #ff4d4f, hwb(0 2% 36%));
+  border-radius: 100%;
+  font-size: 15px;
   font-weight: bold;
   display: flex;
   z-index: 2;
-}
-.fire-icon::before {
-  content: "🔥";
 }
 
 .episode-btn{
@@ -631,7 +632,7 @@ footer {
 }
 
 /* Responsive adjustments for search results */
-@media (max-width: 100%) {
+@media (max-width: 600px) {
   .new-series-section .anime-container {
     grid-template-columns: 1fr; /* Single column on very small screens */
     gap: 0.8rem;

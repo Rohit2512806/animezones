@@ -54,9 +54,10 @@ function createAnimeCard(anime, isRecommendation, episode = null) {
     DonghuaBtn.textContent = 'Donghua';
     actions.appendChild(DonghuaBtn);  // ⬅️ Ye line zaroori hai
     
-    const fireIcon = document.createElement('div');
-    fireIcon.className = 'fire-icon';
-    card.appendChild(fireIcon);
+    const fireIcon = document.createElement('i');
+fireIcon.className = 'fas fa-fire fire-icon'; // Font Awesome fire icon
+card.appendChild(fireIcon);
+
 
     if (isRecommendation) {
         const statusText = getAnimeStatus(anime.title);
@@ -113,8 +114,6 @@ function getAnimeStatus(animeTitle) {
     // Even if last episode is greater than total, still treat as Ongoing
     return "Ongoing";
 }
-
-
 // Global function to get anime by title
 // This should only be used after allAnimeList has been loaded
 window.getAnimeByTitle = function(title) {
