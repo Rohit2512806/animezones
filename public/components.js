@@ -408,6 +408,29 @@ function prevPage() {
         });
     }
 }
+//Add helper function:with anime date
+function getTimeAgo(dateString) {
+    const now = new Date();
+    const updated = new Date(dateString);
+    const seconds = Math.floor((now - updated) / 1000);
+
+    const intervals = [
+        { label: 'year', seconds: 31536000 },
+        { label: 'month', seconds: 2592000 },
+        { label: 'week', seconds: 604800 },
+        { label: 'day', seconds: 86400 },
+        { label: 'hour', seconds: 3600 },
+        { label: 'minute', seconds: 60 },
+    ];
+
+    for (const interval of intervals) {
+        const count = Math.floor(seconds / interval.seconds);
+        if (count >= 1) {
+            return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
+        }
+    }
+    return 'Just now';
+}
 
 // Anime Detail page: Display anime details
 function displayAnimeDetails(anime) {
@@ -525,7 +548,9 @@ statusElem.classList.add(status === 'Completed' ? 'status-completed' : 'status-o
 
             const number = document.createElement('span');
             number.classList.add('episode-item-number');
-            number.textContent = `Ep ${episode.episodeNum}`;
+            const updatedText = episode.updatedAt ? getTimeAgo(episode.updatedAt) : `Ep ${episode.episodeNum}`;
+            number.textContent = updatedText;
+
             details.appendChild(number);
 
             episodeCard.appendChild(details);
@@ -550,8 +575,6 @@ statusElem.classList.add(status === 'Completed' ? 'status-completed' : 'status-o
         episodeListCards.innerHTML = '<p style="color: var(--muted-text); text-align: center;">No episodes available for this anime.</p>';
     }
 }
-
-
 
 // Video Player page: Display video player and episode list
 function displayVideoPlayerDetails(anime, episodeNum) {
@@ -722,7 +745,9 @@ function setupEpisodeNavigation(anime, currentEpNum) {
 
         const number = document.createElement('span');
         number.classList.add('episode-item-number');
-        number.textContent = `Ep ${episode.episodeNum}`;
+        const updatedText = episode.updatedAt ? getTimeAgo(episode.updatedAt) : `Ep ${episode.episodeNum}`;
+        number.textContent = updatedText;
+
         details.appendChild(number);
 
         episodeCard.appendChild(details);
