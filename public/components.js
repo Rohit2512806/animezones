@@ -88,24 +88,32 @@ function getAnimeStatus(animeTitle) {
     if (typeof window.allAnimeList === 'undefined' || !window.allAnimeList) {
         return "Unknown";
     }
+
     const anime = window.allAnimeList.find(a => a.title === animeTitle);
-    if (anime) {
-        if (anime.totalEpisodes > 0 && anime.episodes && anime.episodes.length > 0) {
-            const lastEpisodeNumber = anime.episodes.reduce((max, ep) => Math.max(max, ep.episodeNum), 0);
-            if (lastEpisodeNumber === anime.totalEpisodes) {
-                return "Complete";
-            }
-        }
-        if (anime.totalEpisodes > 0 && anime.episodes && anime.episodes.length < anime.totalEpisodes) {
-            return "Ongoing";
-        } else if (!anime.totalEpisodes && anime.episodes && anime.episodes.length > 0) {
-            return "Ongoing";
-        } else if (anime.totalEpisodes === 0) {
-             return "Complete"; // Movies or one-shots
-        }
+
+    if (!anime) return "Unknown";
+
+    const total = anime.totalEpisodes || 0;
+    const episodes = anime.episodes || [];
+
+    if (total === 0 && episodes.length > 0) {
+        return "Ongoing";  // Unknown total, but episodes exist
     }
-    return "Unknown";
+
+    if (episodes.length === 0) {
+        return total === 0 ? "Unknown" : "Ongoing"; // No episodes yet
+    }
+
+    const lastEpisodeNumber = episodes.reduce((max, ep) => Math.max(max, ep.episodeNum), 0);
+
+    if (lastEpisodeNumber === total) {
+        return "Complete";
+    }
+
+    // Even if last episode is greater than total, still treat as Ongoing
+    return "Ongoing";
 }
+
 
 // Global function to get anime by title
 // This should only be used after allAnimeList has been loaded
