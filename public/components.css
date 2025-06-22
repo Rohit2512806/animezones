@@ -815,12 +815,12 @@ footer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 0.5;
-  padding: 15px; /* Optional */
+  padding: 0px; /* Optional */
 }
 /* Styles for recommendation buttons */
 .recommendation-buttons {
   display: flex;
-  gap: 5px;
+  gap: 3px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -851,7 +851,7 @@ footer {
     margin-right: 10px;
 }
 
-.latest-anime-status {
+.latest-anime-status {border: solid;
     font-size: 0.8em;
     font-weight: bold;
     margin-right: 10px;
