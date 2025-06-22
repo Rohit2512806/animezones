@@ -799,13 +799,14 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.6rem 0.6rem;
+    padding: 0.3rem 0.6rem;
     flex-wrap: wrap;
 }
 
 
 
 nav a {
+  text-align: left;
     color: var(--text-color);
     text-decoration: none;
     font-weight: bold;
@@ -818,18 +819,19 @@ nav a:hover {
 }
 
     .menu-toggle {
-      display: none;
+      display: flex;
     }
 
 /* Search Box Styles */
 .search-box {
     width: 100%;
-    padding: 1rem;
+    padding: auto;
     background-color: var(--card-bg); /* Use card-bg for search box */
     display: none; /* Hidden by default, shown by JS */
 }
 
 .search-wrapper {
+    padding: auto;
     position: relative;
     display: flex;
     justify-content: center;
@@ -841,7 +843,7 @@ nav a:hover {
     width: 100%;
     max-width: 600px;
     padding: 0.6rem 2.8rem 0.6rem 1.2rem;
-    font-size: 1rem;
+    font-size: 0.8rem;
     border-radius: 5px;
     border: none;
     box-sizing: border-box;
