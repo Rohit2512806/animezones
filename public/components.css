@@ -740,7 +740,7 @@ footer {
 }
 
 /* Mobile: 3 columns */
-@media (max-width: 480px) {
+@media (max-width: 360px) {
   
 /* Header Styles */
 .header-bar {
@@ -1030,7 +1030,7 @@ nav a:hover {
 }
 
 /* Tablets: 4 columns */
-@media (min-width: 481px) and (max-width: 1024px) {
+@media (min-width: 361px) and (max-width: 1024px) {
   .anime-container {
     grid-template-columns: repeat(3, 1fr);
   }
