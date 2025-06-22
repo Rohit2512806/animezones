@@ -885,7 +885,7 @@ nav a:hover {
 
 /* Responsive adjustments */
   .container {
-    padding: 0 10px;
+    padding: 6px;
   }
   .section-title {
     font-size: 1.5em;
