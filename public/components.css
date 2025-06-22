@@ -741,6 +741,129 @@ footer {
 
 /* Mobile: 3 columns */
 @media (max-width: 480px) {
+  
+/* Header Styles */
+.header-bar {
+  width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.8rem;
+    background-color: var(--card-bg);
+}
+.site-branding a {
+    text-decoration: none;
+    color: inherit;
+}
+.logo {
+    padding: 0 10px;
+    margin: 0;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    line-height: 0.8; /* Adjust to prevent extra space */
+}
+.red-z {
+  color: red;
+}
+.tagline {   
+     padding: 0 10px;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0.01rem 0.3rem 0;
+    font-size: 0.5rem;
+    color: var(--muted-text);
+    line-height: 1.2;
+}
+
+.right-icons {
+    display: flex;
+    gap: 0.1rem;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--text-color); /* Use text-color for default icon color */
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.2rem;
+    transition: color 0.2s;
+}
+
+.icon-button:hover {
+    color: var(--accent);
+}
+
+/* Navigation Styles */
+nav {
+    width: 100%;
+    background-color: var(--secondary-bg); /* Use secondary-bg for nav */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0.6rem;
+    flex-wrap: wrap;
+}
+
+
+
+nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 1rem 1rem;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: var(--accent);
+}
+
+    .menu-toggle {
+      display: none;
+    }
+
+/* Search Box Styles */
+.search-box {
+    width: 100%;
+    padding: 1rem;
+    background-color: var(--card-bg); /* Use card-bg for search box */
+    display: none; /* Hidden by default, shown by JS */
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.search-wrapper input {
+    width: 100%;
+    max-width: 600px;
+    padding: 0.6rem 2.8rem 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    background-color: var(--bg-color); /* Input background */
+    color: var(--text-color); /* Input text color */
+}
+
+.search-wrapper input::placeholder {
+    color: var(--muted-text);
+}
+
+.search-icon-inside {
+    position: absolute;
+    right: calc(50% - (min(600px, 100%) / 2) + 16px); /* Adjust for padding and input width */
+    color: var(--accent);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+    .container {
+    width: 100%;
+    padding: 0 15px;
+  }
   .anime-container {
     grid-template-columns: repeat(2, 1fr);
   }
