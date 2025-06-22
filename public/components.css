@@ -769,7 +769,7 @@ footer {
     gap: 0.5rem;
   }
   .anime-card {
-    width: 133px;
+    width: 123px;
     height: 184px;
 
   }
@@ -794,8 +794,8 @@ footer {
   .new-series-section .anime-card {
     align-items: flex-start; /* Keep items aligned to the start (left) */
     text-align: left; /* Keep text aligned to the left */
-    padding: 10px;
-    width: 300px;
+    padding: 5px;
+    width: 280px;
   }
   .new-series-section .anime-card img {
     margin-right: 15px; /* Add margin back if removed by column layout */
@@ -811,6 +811,59 @@ footer {
   .new-series-section .anime-info .genre {
     text-align: left; /* Ensure text is left-aligned */
   }
+   #recommendationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 25px;
+  padding: 15px; /* Optional */
+}
+/* Styles for recommendation buttons */
+.recommendation-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.recommendation-buttons button {
+  width: 100%;
+  background-color: rgb(5, 139, 242);
+  color: #f9f6f6;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recommendation-buttons button:hover {
+  background-color: red;
+}
+.recommendation-status {
+     border-radius: 0px 13px 0px 6px;
+    padding: 0.4rem 0.2rem 0.5rem 0.2rem;
+  background: linear-gradient(135deg, #ffc74d, hwb(46 1% 61%));
+  color: white;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.latest-anime-status {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.latest-anime-status:contains("Complete") {
+    color: rgb(238, 163, 144);
+}
+
+.latest-anime-status:contains("Ongoing") {
+    color: orange;
+}
 }
 
 /* Tablets: 4 columns */

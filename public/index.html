@@ -111,9 +111,56 @@ body {
 @media (max-width: 768px) {
  #recommendationGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 18px;
-  padding: 10px; /* Optional */
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 15px;
+  padding: 15px; /* Optional */
+}
+/* Styles for recommendation buttons */
+.recommendation-buttons {
+  display: flex;
+  gap: 5px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.recommendation-buttons button {
+  width: 100%;
+  background-color: rgb(5, 139, 242);
+  color: #f9f6f6;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 5px;
+  font-size: 0.9em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.recommendation-buttons button:hover {
+  background-color: red;
+}
+.recommendation-status {
+     border-radius: 0px 13px 0px 6px;
+    padding: 0.4rem 0.2rem 0.5rem 0.2rem;
+  background: linear-gradient(135deg, #ffc74d, hwb(46 1% 61%));
+  color: white;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.latest-anime-status {
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.latest-anime-status:contains("Complete") {
+    color: rgb(238, 163, 144);
+}
+
+.latest-anime-status:contains("Ongoing") {
+    color: orange;
 }}
   </style>
 </head>
