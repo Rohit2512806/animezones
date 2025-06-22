@@ -747,7 +747,7 @@ footer {
   width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 0.8rem;
+    padding: 5px;
     background-color: var(--card-bg);
 }
 .site-branding a {
@@ -794,12 +794,13 @@ footer {
 
 /* Navigation Styles */
 nav {
+    margin-top: 3px;
     width: 100%;
     background-color: var(--secondary-bg); /* Use secondary-bg for nav */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.3rem 0.6rem;
+    padding: 5px;
     flex-wrap: wrap;
 }
 

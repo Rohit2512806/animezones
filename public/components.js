@@ -214,13 +214,6 @@ function setupRecommendationButtons() {
             displayRecommendations(AdventureAnime);
         });
     }
-
-    if (btnReincarnation) {
-        btnReincarnation.addEventListener('click', () => {
-            const ReincarnationAnime = filterRecommendationsByGenre("Reincarnation");
-            displayRecommendations(ReincarnationAnime);
-        });
-    }
 }
 
 // Home page: Display recommendations
