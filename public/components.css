@@ -742,8 +742,15 @@ footer {
 /* Mobile: 3 columns */
 @media (max-width: 480px) {
   .anime-container {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
+  .anime-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+    text-align: center;
+}
   .new-series-section .anime-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Larger cards for search results */
@@ -756,6 +763,13 @@ footer {
   .anime-container {
     grid-template-columns: repeat(3, 1fr);
   }
+  .anime-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+    text-align: center;
+}
   .new-series-section .anime-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Larger cards for search results */
