@@ -747,7 +747,7 @@ footer {
   width: 100%;
     display: flex;
     justify-content: space-between;
-    padding: 6px;
+    padding: 8px;
     background-color: var(--card-bg);
 }
 .site-branding a {
@@ -800,7 +800,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px;
+    padding: 8px;
     flex-wrap: wrap;
 }
 
@@ -1027,10 +1027,27 @@ nav a:hover {
 .view-all-btn:hover {
   background-color: #f61408; /* A slightly different green on hover */
 }
+/* Footer Styles */
+footer {
+    background-color: var(--card-bg); /* Use card-bg for footer */
+    color: var(--text-color);
+    padding: 0.5rem 0.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+
+}
+
+.footer-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+}
 }
 
 /* Tablets: 4 columns */
-@media (min-width: 361px) and (max-width: 1024px) {
+@media (min-width: 361px) and (max-width: 768px) {
   .anime-container {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1048,7 +1065,7 @@ nav a:hover {
 }
  #recommendationGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
   gap: 0.1;
   padding: 0px; /* Optional */
 }
