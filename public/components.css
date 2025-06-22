@@ -741,21 +741,197 @@ footer {
 
 /* Mobile: 3 columns */
 @media (max-width: 480px) {
+  /* General Anime Card Grid (3 Columns) */
   .anime-container {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
   }
+
+  .anime-card {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+    padding: 5px;
+    background-color: #222;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .anime-card img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .anime-title {
+    font-size: 0.7rem;
+    max-width: 100%;
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  .episode-btn,
+  .sub-btn {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.3rem;
+  }
+
   .anime-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
     justify-items: center;
     text-align: center;
-}
+  }
+
+  /* New Series Section (Horizontal Layout) */
   .new-series-section .anime-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Larger cards for search results */
-    gap: 1.5rem;
-}
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .new-series-section .anime-card {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+    align-items: flex-start;
+    background: #222;
+    border-radius: 8px;
+  }
+
+  .new-series-section .anime-card img {
+    width: 70px;
+    height: 90px;
+    margin-right: 15px;
+    border-radius: 5px;
+  }
+
+  .new-series-section .anime-info {
+    flex: 1;
+    text-align: left;
+  }
+
+  .new-series-section .anime-info .anime-title,
+  .new-series-section .anime-info .status-episode,
+  .new-series-section .anime-info .genre {
+    font-size: 0.75rem;
+    margin-bottom: 4px;
+    text-align: left;
+  }
+
+  /* Search Results Section */
+  .search-results-section .anime-container {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+  }
+
+  .search-results-section .anime-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    background: #222;
+    border-radius: 8px;
+  }
+
+  .search-results-section .anime-card img {
+    width: 70px;
+    height: 90px;
+    margin-right: 15px;
+  }
+
+  .search-results-section .anime-info {
+    flex: 1;
+    text-align: left;
+  }
+
+  .search-results-section .anime-info .anime-title,
+  .search-results-section .anime-info .status-episode,
+  .search-results-section .anime-info .genre {
+    font-size: 0.75rem;
+    text-align: left;
+    margin-bottom: 4px;
+  }
+
+  /* Header & Nav */
+  .menu-toggle {
+    display: block;
+    order: 1;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--secondary-bg);
+    padding: 1rem 0;
+    text-align: center;
+    order: 2;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  nav {
+    background-color: var(--secondary-bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    flex-wrap: wrap;
+  }
+
+  .header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .right-icons {
+    align-self: flex-end;
+    margin-top: -30px;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+  }
+
+  .tagline {
+    font-size: 0.8rem;
+  }
+
+  .search-icon-inside {
+    right: 25px;
+  }
+
+  /* Donghua Button */
+  .donghua-btn {
+    position: absolute;
+    top: -138px;
+    right: 0px;
+    background: linear-gradient(135deg, #ff4d4f, hwb(0 1% 61%));
+    color: white;
+    border: none;
+    border-radius: 0px 13px 0px 10px;
+    padding: 5px 5px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  }
+
+  /* Section Title */
+  .section-title {
+    font-size: 1.5em;
+  }
+
+  .container {
+    padding: 0 15px;
+  }
 }
 
 /* Tablets: 4 columns */
