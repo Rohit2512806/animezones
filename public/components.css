@@ -417,8 +417,7 @@ footer {
     gap: 1.5rem;
 }
 .new-series-section .anime-card {
-          min-width: 768px;
-          max-width: 1200px;
+          width: 775px;
           height: 5rem;
           display: flex;
           flex-direction: row;
