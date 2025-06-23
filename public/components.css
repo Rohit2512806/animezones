@@ -1175,9 +1175,9 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Larger cards for search results */
     gap: 1.5rem;
 }
- #recommendationGrid {border: solid;
+ #recommendationGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 0.1;
   padding: 0px; /* Optional */
 }
