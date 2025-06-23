@@ -1184,6 +1184,26 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Larger cards for search results */
     gap: 1.5rem;
 }
+ #recommendationGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+}
+#recommendationSection .anime-container {
+    grid-template-columns: repeat(3,1fr);
+    gap: 0.8rem;
+  }
+
+  #recommendationSection .anime-card {
+   gap: 10px;
+    width: 123px;
+    height: 164px;
+  }
+
+  #recommendationSection .anime-card img {
+    width:100%;
+    height: 100%;
+  }
+  
 }
 
 
