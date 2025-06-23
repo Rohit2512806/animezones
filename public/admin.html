@@ -52,6 +52,7 @@
   <input type="text" id="genre" placeholder="Genres (comma separated)" required>
   <input type="text" id="releaseDate" placeholder="Release Date (e.g., 22 Mar 2024)" required>
   <textarea id="description" placeholder="Description" required></textarea>
+  <img id="imgPreview" src="" style="max-width: 200px; justify-self: center; display: none;"/>
 
   <h3>Episodes</h3>
   <div id="episodesContainer"></div>
@@ -90,10 +91,17 @@
 <script>
   // Prompt for admin password on page load
 const password = prompt("Enter admin password:");
-if (password !== "74Rohit58.") {
+if (password !== "`") {
   alert("Access denied");
   window.location.href = "/";
 }
+//image preview 
+document.getElementById("img").addEventListener("input", e => {
+  const src = e.target.value;
+  const img = document.getElementById("imgPreview");
+  img.src = src;
+  img.style.display = src ? "block" : "none";
+});
 
 // Return current timestamp in ISO format
 function getNowISO() {
