@@ -1190,12 +1190,12 @@ footer {
 }
 #recommendationSection .anime-container {
     grid-template-columns: repeat(3,1fr);
-    gap: 0.8rem;
+    gap: 0.3rem;
   }
 
   #recommendationSection .anime-card {
    gap: 10px;
-    width: 123px;
+    width: 120px;
     height: 164px;
   }
 
