@@ -776,7 +776,7 @@ footer {
 }
 
 /* Mobile: 3 columns */
-@media (max-width: 480px) {
+@media (max-width: 380px) {
   
 /* Header Styles */
 .header-bar {
@@ -1168,7 +1168,7 @@ footer {
 }
 
 /* Tablets: 4 columns */
-@media (min-width: 360px) and (max-width: 768px) {
+@media (min-width: 381px) and (max-width: 768px) {
   .anime-container {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1196,8 +1196,8 @@ footer {
   }
 
   #recommendationSection .anime-card {
-    width: 123px;
-    height: 184px;
+    width: 113px;
+    height: 164px;
   }
 
   #recommendationSection .anime-card img {
