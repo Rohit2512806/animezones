@@ -1047,11 +1047,25 @@ nav a:hover {
   .new-series-section .anime-info .genre {
     text-align: left; /* Ensure text is left-aligned */
   }
+    #recommendationSection .anime-container {
+    grid-template-columns: repeat(2,1fr);
+    gap: 0.8rem;
+  }
+
+  #recommendationSection .anime-card {
+   gap: 10px;
+    width: 143px;
+    height: 184px;
+  }
+
+  #recommendationSection .anime-card img {
+    width:100%;
+    height: 100%;
+    
+  }
    #recommendationGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 0.8rem;
-  padding: 0px; /* Optional */
+   grid-template-columns: repeat(2, 1fr);
 }
 /* Styles for recommendation buttons */
 .recommendation-buttons {
@@ -1077,12 +1091,6 @@ nav a:hover {
 .recommendation-buttons button:hover {
   background-color: red;
 }
-.recommendation.anime-card {border: solid;
-    width: 133px;
-    height: 184px;
-
-  }
-
 .recommendation-status {
      border-radius: 0px 13px 0px 6px;
     padding: 0.4rem 0.2rem 0.5rem 0.2rem;
@@ -1154,7 +1162,7 @@ footer {
 }
 
 .footer-content {
-    width: 100%;
+    max-width: 480px;
     display: flex;
     flex-direction: column;
     align-items: center;
