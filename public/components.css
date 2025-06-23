@@ -776,7 +776,7 @@ footer {
 }
 
 /* Mobile: 3 columns */
-@media (max-width: 360px) {
+@media (max-width: 480px) {
   
 /* Header Styles */
 .header-bar {
@@ -979,9 +979,6 @@ nav a:hover {
     width: 100%;
     padding: 0 15px;
   }
-  .anime-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .anime-grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -1007,6 +1004,7 @@ nav a:hover {
     gap: 0.5rem;
   }
   .anime-card {
+   gap: 10px;
     width: 133px;
     height: 184px;
 
@@ -1051,8 +1049,8 @@ nav a:hover {
   }
    #recommendationGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 0.5;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.8rem;
   padding: 0px; /* Optional */
 }
 /* Styles for recommendation buttons */
@@ -1079,6 +1077,12 @@ nav a:hover {
 .recommendation-buttons button:hover {
   background-color: red;
 }
+.recommendation.anime-card {border: solid;
+    width: 133px;
+    height: 184px;
+
+  }
+
 .recommendation-status {
      border-radius: 0px 13px 0px 6px;
     padding: 0.4rem 0.2rem 0.5rem 0.2rem;
@@ -1159,7 +1163,7 @@ footer {
 }
 
 /* Tablets: 4 columns */
-@media (min-width: 361px) and (max-width: 768px) {
+@media (min-width: 481px) and (max-width: 768px) {
   .anime-container {
     grid-template-columns: repeat(3, 1fr);
   }
