@@ -1186,7 +1186,9 @@ footer {
 }
  #recommendationGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 5px;
+  padding: 5px; /* Optional */
 }
 #recommendationSection .anime-container {
     grid-template-columns: repeat(3,1fr);
@@ -1195,7 +1197,7 @@ footer {
 
   #recommendationSection .anime-card {
    gap: 10px;
-    width: 120px;
+    width: 113px;
     height: 164px;
   }
 
