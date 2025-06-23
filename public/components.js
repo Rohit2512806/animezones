@@ -125,7 +125,7 @@ window.getAnimeByTitle = function(title) {
 
 // --- Page-Specific Rendering Functions ---
 
-// Home page: Render latest anime episodes as cards
+// renderLatestAnime section
 function renderLatestAnime(animeList) {
     const latestAnimeGrid = document.getElementById('latestAnimeGrid');
     if (!latestAnimeGrid) return;
@@ -143,7 +143,7 @@ function renderLatestAnime(animeList) {
                     episodeNum: ep.episodeNum,
                     updatedAt: ep.updatedAt,
                     anime,
-                    episode: ep // pass full episode object
+                    episode: ep
                 });
             });
         }
@@ -156,31 +156,59 @@ function renderLatestAnime(animeList) {
     const latestToShow = sortedEpisodes.slice(0, 20);
 
     latestToShow.forEach(ep => {
-        const animeCard = createAnimeCard(ep.anime, false, ep.episode);
-        latestAnimeGrid.appendChild(animeCard);
+        const placeholderCard = createSkeletonCard(); // 🔹 Step 1: create skeleton
+        latestAnimeGrid.appendChild(placeholderCard);
+
+        const delay = Math.random() * 1000 + 200; // 1 to 4 sec
+
+        setTimeout(() => {
+            const realCard = createAnimeCard(ep.anime, false, ep.episode); // 🔹 Step 2: real content
+            latestAnimeGrid.replaceChild(realCard, placeholderCard);
+        }, delay);
     });
 }
-    // Home page: Render All anime episodes as cards
-  function renderAllAnime(animeList) {
+
+//renderAllAnime section
+function renderAllAnime(animeList) {
     const allAnimeGrid = document.getElementById('allAnimeGrid');
     if (!allAnimeGrid) return;
 
     allAnimeGrid.innerHTML = '';
 
     animeList.forEach(anime => {
-      let latestEpisode = null;
+        let latestEpisode = null;
 
-      if (anime.episodes && anime.episodes.length > 0) {
-        latestEpisode = anime.episodes.reduce(
-          (latest, ep) => ep.episodeNum > latest.episodeNum ? ep : latest,
-          anime.episodes[0]
-        );
-      }
+        if (anime.episodes && anime.episodes.length > 0) {
+            latestEpisode = anime.episodes.reduce(
+                (latest, ep) => ep.episodeNum > latest.episodeNum ? ep : latest,
+                anime.episodes[0]
+            );
+        }
 
-      const card = createAnimeCard(anime, false, latestEpisode);
-      allAnimeGrid.appendChild(card);
+        const placeholder = createSkeletonCard();
+        allAnimeGrid.appendChild(placeholder);
+
+        const delay = Math.random() * 1000 + 200;
+
+        setTimeout(() => {
+            const realCard = createAnimeCard(anime, false, latestEpisode);
+            allAnimeGrid.replaceChild(realCard, placeholder);
+        }, delay);
     });
-  }
+}
+function createSkeletonCard() {
+    const card = document.createElement('div');
+    card.className = 'anime-card loading';
+
+    card.innerHTML = `
+        <div class="skeleton-img skeleton-box"></div>
+        <div class="skeleton-text skeleton-line"></div>
+        <div class="skeleton-text skeleton-line short"></div>
+    `;
+
+    return card;
+}
+
 
 
 // Home page: Set up recommendation buttons
@@ -858,7 +886,7 @@ fetch('https://animezones-64tp.onrender.com/anime')
         if (mainContent) {
             mainContent.innerHTML = `<p style="color: red; text-align: center; padding: 20px;">
                 Error loading anime data. Please try refreshing.
-                Ensure your backend server is running at http://localhost:3000.
+                Ensure your backend server is running at https://animezones-64tp.onrender.com.
             </p>`;
         }
     });

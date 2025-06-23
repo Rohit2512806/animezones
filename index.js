@@ -13,21 +13,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
 
-/**
- * Root route to confirm API is working
- */
+ /* Root route to confirm API is working*/
 app.get("/", (req, res) => {
   res.send("Welcome to Anime Backend API (MongoDB Version)");
 });
 
-/**
- * Get all anime - sorted by latest updated episode
- * Also removes _id from MongoDB documents
- */
+ /* Get all anime - sorted by latest updated episode*/
 app.get("/anime", async (req, res) => {
   try {
     const allAnime = await animeCollection
-      .find({}, { projection: { _id: 0 } })  // ⛔ Remove MongoDB's _id
+      .find({}, { projection: { _id: 0 } }) 
       .toArray();
 
     const sorted = allAnime.sort((a, b) => {
