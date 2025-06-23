@@ -1061,7 +1061,6 @@ nav a:hover {
   #recommendationSection .anime-card img {
     width:100%;
     height: 100%;
-    
   }
    #recommendationGrid {
   display: grid;
@@ -1153,20 +1152,18 @@ nav a:hover {
 }
 /* Footer Styles */
 footer {
+    width: 100%;
     background-color: var(--card-bg); /* Use card-bg for footer */
     color: var(--text-color);
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem ;
     text-align: center;
     font-size: 0.9rem;
-
 }
-
 .footer-content {
     max-width: 480px;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 1px;
+   
 }
 }
 
