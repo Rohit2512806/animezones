@@ -213,7 +213,7 @@ function createSkeletonCard() {
 
 // Home page: Set up recommendation buttons
 function setupRecommendationButtons() {
-    const btnRecommendedDrama = document.getElementById('btnRecommendedDrama');
+    const btnDrama = document.getElementById('btnDrama');
     const btnHistorical = document.getElementById('btnHistorical');
     const btnAdventure = document.getElementById('btnAdventure');
     const btnReincarnation = document.getElementById('btnReincarnation');
@@ -221,14 +221,13 @@ function setupRecommendationButtons() {
     const filterRecommendationsByGenre = (genre) => {
         return window.allAnimeList.filter(anime => anime.genre && (Array.isArray(anime.genre) ? anime.genre.includes(genre) : anime.genre === genre));
     };
-
-    if (btnRecommendedDrama) {
-        btnRecommendedDrama.addEventListener('click', () => {
-            const DramaAnime = filterRecommendationsByGenre("Drama");
-            displayRecommendations(DramaAnime);
-        });
+    if (btnDrama) {
+         btnDrama.addEventListener('click', () => {
+              const dramaAnime = filterRecommendationsByGenre("Drama");
+              displayRecommendations(dramaAnime);
+          });
     }
-
+    
     if (btnHistorical) {
         btnHistorical.addEventListener('click', () => {
             const HistoricalAnime = filterRecommendationsByGenre("Historical");
