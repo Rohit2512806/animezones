@@ -204,27 +204,33 @@ document.addEventListener('DOMContentLoaded', () => {
             return titleA.localeCompare(titleB);
         });
 
-     function getAnimeStatus(title) {
+    function getAnimeStatus(title) {
     const anime = window.allAnimeList.find(a => a.title.trim().toLowerCase() === title.trim().toLowerCase());
 
     if (!anime) return 'Unknown';
 
     const total = parseInt(anime.totalEpisodes);
+    if (isNaN(total) || total === 0) return 'Unknown';
+
     let current = 0;
 
-    // Try to get current episode from episodes array
+    // Get highest episode number from episodes array
     if (Array.isArray(anime.episodes) && anime.episodes.length > 0) {
-        const episodeNums = anime.episodes.map(e => e.episodeNum || 0);
-        current = Math.max(...episodeNums);
+        const episodeNums = anime.episodes
+            .map(e => parseInt(e.episodeNum))
+            .filter(num => !isNaN(num));
+
+        if (episodeNums.length > 0) {
+            current = Math.max(...episodeNums);
+        }
     }
 
-    if (!isNaN(current) && !isNaN(total)) {
-        return current >= total ? 'Complete' : 'Ongoing';
-    }
-
-    // Fallback
-    return 'Unknown';
+    if (current === total) return 'Complete';
+    if (current < total) return 'Ongoing';
+     if (current > total) return 'Ongoing';
+    return 'Unknown'; // if somehow current > total or invalid
 }
+
 
 
 
