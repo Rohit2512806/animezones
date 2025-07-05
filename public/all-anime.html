@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Latest Anime List</title>
+  <title>All Anime - AnimeZone</title>
+<meta name="description" content="Explore all available anime titles on AnimeZone. Search, filter, and enjoy watching for free." />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="components.css">
@@ -16,6 +17,14 @@ body {
   transition: background-color 0.3s, color 0.3s;
   margin: 0;
   padding: 0;
+}
+
+/* Main Content Wrapper */
+#mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 0.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .all-anime-section {
@@ -31,6 +40,13 @@ body {
     text-align: center;
     margin-bottom: 20px;
     font-size: 2em;
+}
+/* Anime Grid */
+.anime-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 /* Pagination Styles */
@@ -66,6 +82,10 @@ body {
     align-self: center;
     font-weight: bold;
     color: var(--text-color);
+}
+#pageInfo {
+  font-size: 1rem;
+  color: #555;
 }
   </style>
 </head>

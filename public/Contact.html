@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AnimeSub - Contact</title>
+  <title>Contact Us - AnimeZone</title>
+<meta name="description" content="Contact AnimeZone for support, questions, or feedback. We're here to help!" />
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="components.css"> <style>
@@ -148,14 +149,10 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
         applySavedTheme();
-        // searchResultsSection और contactContainer की डिस्प्ले को कंट्रोल करने का लॉजिक
-        // अब components.js में होना चाहिए।
-        // यहां सिर्फ initial state सेट कर सकते हैं, या components.js को ही करने दें।
         const searchResultsSection = document.getElementById('searchResultsSection');
         const contactContainer = document.getElementById('contactContainer');
         const mainContent = document.getElementById('mainContent'); // Added mainContent reference
 
-        // जब पेज लोड हो, तो सर्च रिजल्ट सेक्शन छिपा हो और कांटेक्ट कंटेंट दिख रहा हो
         searchResultsSection.style.display = 'none';
         if (contactContainer) { // Ensure contactContainer exists
             contactContainer.style.display = 'block';
@@ -164,14 +161,6 @@
             mainContent.style.display = 'block';
         }
     });
-
-    // applySavedTheme(), toggleTheme(), toggleMenu(), toggleSearchBox()
-    // ये सभी फ़ंक्शंस अब components.js में होने चाहिए और Contact.html से हटा दिए गए हैं।
-    // अगर वे components.js में नहीं हैं, तो उन्हें वहां ले जाएं।
-    // अगर वे पहले से ही components.js में हैं, तो उन्हें यहां दोबारा परिभाषित करने की आवश्यकता नहीं है।
-
-    // Note: 'getAnimeByTitle' and 'allAnimeList' are expected to be defined in 'animeData.js'
-    // 'createSearchAnimeCard' should be in components.js as well.
   </script>
 </body>
 </html>
