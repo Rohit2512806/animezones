@@ -143,7 +143,6 @@ nav a:hover {
     cursor: pointer;
 }
 
-
 /* Anime Grid Styles */
 .anime-container {
   display: grid;
@@ -1183,10 +1182,35 @@ footer {
   .anime-grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 1.5rem;
+    gap: 0.5rem;
     justify-items: center;
     text-align: center;
 }
+.anime-card {
+   gap: 10px;
+    width: 133px;
+    height: 184px;
+
+  }
+  .anime-card img {
+    width: 100%;
+    height: 200px;
+  }
+  .donghua-btn {
+  position: absolute;
+  top: -158px;
+  right: 0px;
+  background: linear-gradient(135deg, #ff4d4f, hwb(0 1% 61%));
+  color: white;
+  border: none;
+  border-radius: 0px 13px 0px 10px;
+  padding: 5px 5px;
+  font-size: 12px;
+   font-weight: bold;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    }
   .new-series-section .anime-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Larger cards for search results */
@@ -1214,5 +1238,13 @@ footer {
   }
   
 }
-
+@media (min-width: 770px){
+  /* Anime Grid */
+.anime-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+}
 
