@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://animezones.vercel.app/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://animezones.vercel.app/</loc></url>
+  <url><loc>https://animezones.vercel.app/list.html</loc></url>
+  <url><loc>https://animezones.vercel.app/privacy.html</loc></url>
+  <url><loc>https://animezones.vercel.app/contact.html</loc></url>
+  <url><loc>https://animezones.vercel.app/video-player.html</loc></url>
+  <url><loc>https://animezones.vercel.app/new-series-section.html</loc></url>
+  <url><loc>https://animezones.vercel.app/genre-section-template.html</loc></url>
+  <url><loc>https://animezones.vercel.app/anime-details.html</loc></url>
+  <url><loc>https://animezones.vercel.app/all-anime.html</loc></url>
+  <url><loc>https://animezones.vercel.app/admin.html</loc></url>
 </urlset>
