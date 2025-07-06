@@ -1188,8 +1188,8 @@ footer {
 }
 .anime-card {
    gap: 10px;
-    width: 133px;
-    height: 184px;
+    width: 123px;
+    height: 174px;
 
   }
   .anime-card img {
@@ -1197,19 +1197,8 @@ footer {
     height: 200px;
   }
   .donghua-btn {
-  position: absolute;
-  top: -158px;
-  right: 0px;
-  background: linear-gradient(135deg, #ff4d4f, hwb(0 1% 61%));
-  color: white;
-  border: none;
-  border-radius: 0px 13px 0px 10px;
-  padding: 5px 5px;
-  font-size: 12px;
-   font-weight: bold;
-  cursor: pointer;
-  z-index: 2;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  top: -148px;
+  
     }
   .new-series-section .anime-container {
     display: grid;
@@ -1236,6 +1225,9 @@ footer {
     width:100%;
     height: 100%;
   }
+  #recommendationSection .donghua-btn {
+  top: -138px;
+    }
   
 }
 @media (min-width: 770px){
