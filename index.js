@@ -115,21 +115,41 @@ app.put("/anime/:id", async (req, res) => {
     return res.status(400).json({ error: "Missing fields" });
   }
 
-  if (updatedData.episodes) {
-    const nums = updatedData.episodes.map(ep => ep.episodeNum);
-    const duplicates = nums.filter((num, i) => nums.indexOf(num) !== i);
-    if (duplicates.length > 0) {
-      return res.status(400).json({ error: "Duplicate episode numbers found: " + [...new Set(duplicates)].join(", ") });
-    }
+  const existingAnime = await animeCollection.findOne({ id: animeId });
+  if (!existingAnime) {
+    return res.status(404).json({ error: "Anime not found" });
   }
+
+  let newEpisodes = updatedData.episodes || existingAnime.episodes || [];
+
+  // Smart merge of episodes: preserve old updatedAt where not modified
+  const mergedEpisodes = newEpisodes.map(newEp => {
+    const oldEp = existingAnime.episodes?.find(e => e.episodeNum === newEp.episodeNum);
+    const isModified = !oldEp || oldEp.videoUrl !== newEp.videoUrl || oldEp.title !== newEp.title || oldEp.imageUrl !== newEp.imageUrl;
+    return {
+      ...newEp,
+      updatedAt: isModified ? newEp.updatedAt || new Date().toISOString() : oldEp.updatedAt
+    };
+  });
 
   await animeCollection.updateOne(
     { id: animeId },
-    { $set: { ...updatedData, id: animeId } }
+    {
+      $set: {
+        title: updatedData.title,
+        genre: updatedData.genre,
+        img: updatedData.img,
+        description: updatedData.description,
+        releaseDate: updatedData.releaseDate,
+        totalEpisodes: updatedData.totalEpisodes,
+        episodes: mergedEpisodes
+      }
+    }
   );
 
   res.json({ message: "Anime updated successfully" });
 });
+
 
 /**
  * Delete an anime by ID

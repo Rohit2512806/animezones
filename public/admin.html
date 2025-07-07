@@ -92,12 +92,11 @@
 <script src="components.js"></script>
 <script>
   // Prompt for admin password on page load
-const password = prompt("Enter admin password:");
-if (password !== "`") {
-  alert("Access denied");
-  window.location.href = "/";
-}
-//image preview 
+//const password = prompt("Enter admin password:");
+//if (password !== "`") {
+//  alert("Access denied");
+ // window.location.href = "/";}
+// image preview
 document.getElementById("img").addEventListener("input", e => {
   const src = e.target.value;
   const img = document.getElementById("imgPreview");
@@ -105,12 +104,10 @@ document.getElementById("img").addEventListener("input", e => {
   img.style.display = src ? "block" : "none";
 });
 
-// Return current timestamp in ISO format
 function getNowISO() {
   return new Date().toISOString();
 }
 
-// Add delete button listeners to episode blocks
 function attachDeleteListeners(container) {
   container.querySelectorAll(".removeBtn").forEach(btn => {
     btn.onclick = () => {
@@ -120,12 +117,10 @@ function attachDeleteListeners(container) {
   });
 }
 
-// Recalculate episode numbers and titles after deletion or renumbering
 function renumberEpisodes(container) {
   attachNumberListeners(container);
 }
 
-// Add a new episode block in the "Add Anime" form
 function addEpisode() {
   const container = document.getElementById("episodesContainer");
   const epNum = container.querySelectorAll(".episode").length + 1;
@@ -134,7 +129,7 @@ function addEpisode() {
   const div = document.createElement("div");
   div.className = "episode";
   div.innerHTML = `
-    <input type="number" value="${epNum}" class="epNum">
+    <input type="text" value="${epNum}" class="epNum">
     <input type="text" value="${title} - Ep ${epNum}" class="epTitle" readonly>
     <input type="text" placeholder="Video URL" class="epVideo" required>
     <button type="button" class="removeBtn">❌ Delete</button>
@@ -145,7 +140,6 @@ function addEpisode() {
   attachNumberListeners(container);
 }
 
-// Add a new episode block in the "Update Anime" form
 function addUpdateEpisode() {
   const container = document.getElementById("u_episodesContainer");
   const epNum = container.querySelectorAll(".episode").length + 1;
@@ -154,7 +148,7 @@ function addUpdateEpisode() {
   const div = document.createElement("div");
   div.className = "episode";
   div.innerHTML = `
-    <input type="number" value="${epNum}" class="epNum">
+    <input type="text" value="${epNum}" class="epNum">
     <input type="text" value="${title} - Ep ${epNum}" class="epTitle" readonly>
     <input type="text" placeholder="Video URL" class="epVideo" required>
     <button type="button" class="removeBtn">❌ Delete</button>
@@ -165,17 +159,16 @@ function addUpdateEpisode() {
   attachNumberListeners(container);
 }
 
-// Check for duplicate episode numbers
 function hasDuplicateEpisodes(episodes) {
   const seen = new Set();
   for (let ep of episodes) {
-    if (seen.has(ep.episodeNum)) return true;
-    seen.add(ep.episodeNum);
+    const key = ep.episodeNum.trim();
+    if (seen.has(key)) return true;
+    seen.add(key);
   }
   return false;
 }
 
-// Show or hide loading spinner on buttons
 function setLoading(button, isLoading) {
   if (isLoading) {
     button.classList.add("loading");
@@ -186,14 +179,14 @@ function setLoading(button, isLoading) {
   }
 }
 
-// Submit new anime to server and store in MongoDB
+// Add new Anime
 document.getElementById("animeForm").addEventListener("submit", async function (e) {
   e.preventDefault();
   const addBtn = document.getElementById("addAnimeBtn");
   setLoading(addBtn, true);
 
   const episodes = Array.from(document.querySelectorAll("#episodesContainer .episode")).map(ep => ({
-    episodeNum: parseInt(ep.querySelector(".epNum").value),
+    episodeNum: ep.querySelector(".epNum").value.trim(),
     title: ep.querySelector(".epTitle").value,
     videoUrl: ep.querySelector(".epVideo").value,
     imageUrl: document.getElementById("img").value,
@@ -234,7 +227,7 @@ document.getElementById("animeForm").addEventListener("submit", async function (
   }
 });
 
-// Load selected anime data into the update form
+// Load Anime Details into Update Form
 document.getElementById("animeSelector").addEventListener("change", async function () {
   const id = this.value;
   if (!id) return;
@@ -256,7 +249,7 @@ document.getElementById("animeSelector").addEventListener("change", async functi
       const div = document.createElement("div");
       div.className = "episode";
       div.innerHTML = `
-        <input type="number" value="${ep.episodeNum}" class="epNum" readonly>
+        <input type="text" value="${ep.episodeNum}" class="epNum" readonly>
         <input type="text" value="${ep.title}" class="epTitle" readonly>
         <input type="text" value="${ep.videoUrl}" class="epVideo" required>
         <button type="button" class="removeBtn">❌ Delete</button>
@@ -270,20 +263,48 @@ document.getElementById("animeSelector").addEventListener("change", async functi
   }
 });
 
-// Submit update to selected anime
+// ✅ Update only modified episodes
 document.getElementById("updateForm").addEventListener("submit", async function (e) {
   e.preventDefault();
   const updateBtn = document.getElementById("updateAnimeBtn");
   setLoading(updateBtn, true);
 
   const id = document.getElementById("animeSelector").value;
-  const episodes = Array.from(document.querySelectorAll("#u_episodesContainer .episode")).map(ep => ({
-    episodeNum: parseInt(ep.querySelector(".epNum").value),
-    title: ep.querySelector(".epTitle").value,
-    videoUrl: ep.querySelector(".epVideo").value,
-    imageUrl: document.getElementById("u_img").value,
-    updatedAt: getNowISO()
-  }));
+
+  // 🔁 Fetch existing anime data
+  let originalEpisodes = [];
+  try {
+    const res = await fetch(`https://animezones-64tp.onrender.com/anime/${id}`);
+    const anime = await res.json();
+    originalEpisodes = anime.episodes || [];
+  } catch (err) {
+    document.getElementById("updateMessage").innerText = "Failed to fetch original episodes: " + err.message;
+    setLoading(updateBtn, false);
+    return;
+  }
+
+  const episodes = Array.from(document.querySelectorAll("#u_episodesContainer .episode")).map(ep => {
+  const episodeNum = ep.querySelector(".epNum").value.trim();
+  const title = ep.querySelector(".epTitle").value;
+  const videoUrl = ep.querySelector(".epVideo").value;
+  const imageUrl = document.getElementById("u_img").value;
+
+  const existing = originalEpisodes.find(e => e.episodeNum === episodeNum);
+
+  const wasModified = !existing ||
+    existing.videoUrl !== videoUrl ||
+    existing.title !== title ||
+    existing.imageUrl !== imageUrl;
+
+  return {
+    episodeNum,
+    title,
+    videoUrl,
+    imageUrl,
+    updatedAt: wasModified ? getNowISO() : (existing?.updatedAt || getNowISO())
+  };
+});
+
 
   if (hasDuplicateEpisodes(episodes)) {
     alert("Duplicate episode numbers found. Please fix before updating.");
@@ -316,7 +337,7 @@ document.getElementById("updateForm").addEventListener("submit", async function 
   }
 });
 
-// Delete selected anime
+// Delete Anime
 document.getElementById("deleteAnimeBtn").addEventListener("click", async () => {
   const id = document.getElementById("animeSelector").value;
   if (!id) return alert("Please select an anime to delete.");
@@ -339,7 +360,7 @@ document.getElementById("deleteAnimeBtn").addEventListener("click", async () => 
   }
 });
 
-// Load all anime from server and populate update dropdown
+// Load anime list into dropdown
 async function loadAnimeList() {
   try {
     const res = await fetch('https://animezones-64tp.onrender.com/anime');
@@ -358,7 +379,6 @@ async function loadAnimeList() {
   }
 }
 
-// Update episode titles live when episode number changes
 function attachNumberListeners(container) {
   container.querySelectorAll(".epNum").forEach((input, index) => {
     input.addEventListener("input", () => {
@@ -367,13 +387,12 @@ function attachNumberListeners(container) {
         ? document.getElementById("u_title")
         : document.getElementById("title");
       const title = titleInput.value || "Episode";
-      const epNum = input.value || index + 1;
+      const epNum = input.value.trim();
       epTitleInput.value = `${title} - Ep ${epNum}`;
     });
   });
 }
 
-// Update episode titles automatically if anime title changes
 document.getElementById("title").addEventListener("input", () => {
   renumberEpisodes(document.getElementById("episodesContainer"));
 });
@@ -381,7 +400,6 @@ document.getElementById("u_title").addEventListener("input", () => {
   renumberEpisodes(document.getElementById("u_episodesContainer"));
 });
 
-// Initialize dropdown with all available anime entries
 loadAnimeList();
 </script>
 

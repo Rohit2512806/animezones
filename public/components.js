@@ -604,6 +604,23 @@ statusElem.classList.add(status === 'Completed' ? 'status-completed' : 'status-o
 }
 
 // Video Player page: Display video player and episode list
+function findMatchingEpisode(episodes, targetEpNum) {
+    const target = parseInt(targetEpNum);
+
+    for (const ep of episodes) {
+        const raw = ep.episodeNum?.toString().trim();
+        if (!raw) continue;
+
+        if (raw.includes('-')) {
+            const [start, end] = raw.split('-').map(n => parseInt(n.trim()));
+            if (target >= start && target <= end) return ep;
+        } else if (parseInt(raw) === target) {
+            return ep;
+        }
+    }
+    return null;
+}
+
 function displayVideoPlayerDetails(anime, episodeNum) {
     const videoPlayerSection = document.getElementById('videoPlayerSection');
     const currentAnimeTitleElem = document.getElementById('currentAnimeTitle');
@@ -622,7 +639,7 @@ function displayVideoPlayerDetails(anime, episodeNum) {
         return;
     }
 
-    const currentEpisode = anime.episodes.find(ep => ep.episodeNum === parseInt(episodeNum));
+    const currentEpisode = findMatchingEpisode(anime.episodes, episodeNum);
 
     if (!currentEpisode || !currentEpisode.videoUrl) {
         currentAnimeTitleElem.textContent = `${anime.title} - Episode ${episodeNum} Not Available`;
@@ -631,27 +648,21 @@ function displayVideoPlayerDetails(anime, episodeNum) {
         return;
     }
 
-  currentAnimeTitleElem.textContent = currentEpisode.title || '';
-
+    currentAnimeTitleElem.textContent = currentEpisode.title || `${anime.title} - Episode ${episodeNum}`;
 
     const url = currentEpisode.videoUrl;
     let embedCode = '';
 
-    // ==== YOUTUBE ====
     if (url.includes("youtube.com") || url.includes("youtu.be") || /^[a-zA-Z0-9_-]{11}$/.test(url)) {
         let videoId = '';
-
-        // Extract ID from full YouTube URL
         if (url.includes("youtube.com/watch?v=")) {
             const urlParams = new URL(url);
             videoId = urlParams.searchParams.get("v");
         } else if (url.includes("youtu.be/")) {
             videoId = url.split("youtu.be/")[1];
         } else {
-            // Assume it's just the video ID
             videoId = url;
         }
-
         embedCode = `<iframe width="100%" height="100%" style="position:absolute; left:0; top:0; border:none;" 
                         src="https://www.youtube.com/embed/${videoId}" 
                         title="YouTube video player" 
@@ -659,20 +670,15 @@ function displayVideoPlayerDetails(anime, episodeNum) {
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                         allowfullscreen></iframe>`;
     }
-
-    // ==== DAILYMOTION ====
     else if (url.includes("dailymotion.com/video/") || url.includes("dai.ly/") || /^[a-zA-Z0-9]+$/.test(url)) {
         let videoId = '';
-
         if (url.includes("dailymotion.com/video/")) {
             videoId = url.split("dailymotion.com/video/")[1].split("_")[0];
         } else if (url.includes("dai.ly/")) {
             videoId = url.split("dai.ly/")[1];
         } else {
-            // Assume it's just the video ID
             videoId = url;
         }
-
         embedCode = `<iframe width="100%" height="100%" style="position:absolute; left:0; top:0; border:none;" 
                         src="https://geo.dailymotion.com/player.html?video=${videoId}" 
                         allowfullscreen 
@@ -680,74 +686,78 @@ function displayVideoPlayerDetails(anime, episodeNum) {
                         allow="web-share"></iframe>`;
     }
     else if (url.endsWith(".mp4")) {
-    embedCode = `<video width="100%" height="100%" style="position:absolute; left:0; top:0;" controls autoplay>
-                   <source src="${url}" type="video/mp4">
-                   Your browser does not support the video tag.
-                 </video>`;
-}
-
-
-    // ==== DEFAULT ====
+        embedCode = `<video width="100%" height="100%" style="position:absolute; left:0; top:0;" controls autoplay>
+                       <source src="${url}" type="video/mp4">
+                       Your browser does not support the video tag.
+                     </video>`;
+    }
     else {
         embedCode = `<p style="text-align: center; color: var(--muted-text);">Unsupported video platform or invalid video URL.</p>`;
     }
+
     videoWrapper.innerHTML = embedCode;
 
     // Anime Info Box Update
-document.getElementById('animeInfoImage').src = anime.img || 'default.jpg';
-document.getElementById('animeInfoTitle').textContent = anime.title || 'Untitled';
-document.getElementById('animeInfoEpisodes').textContent = `Total Episodes: ${anime.episodes.length || 0}`;
-const statusElem = document.getElementById('animeInfoStatus');
-const episodeNums = anime.episodes.map(ep => ep.episodeNum || 0);
-const lastEpNum = Math.max(...episodeNums);
-const totalCount = anime.totalEpisodes || lastEpNum;
-let status = 'Ongoing';
-if (lastEpNum === totalCount) {
-    status = 'Completed';
-}
-statusElem.textContent = `Status: ${status}`;
-statusElem.classList.remove('status-ongoing', 'status-completed');
-statusElem.classList.add(status === 'Completed' ? 'status-completed' : 'status-ongoing');
+    document.getElementById('animeInfoImage').src = anime.img || 'default.jpg';
+    document.getElementById('animeInfoTitle').textContent = anime.title || 'Untitled';
+    document.getElementById('animeInfoEpisodes').textContent = `Total Episodes: ${anime.episodes.length || 0}`;
 
-//Navigation buttons  next and previous
-function setupEpisodeNavigation(anime, currentEpNum) {
-    const episodes = [...anime.episodes].sort((a, b) => a.episodeNum - b.episodeNum);
-    const currentIndex = episodes.findIndex(ep => ep.episodeNum === currentEpNum);
+    const statusElem = document.getElementById('animeInfoStatus');
+    const episodeNums = anime.episodes.map(ep => parseInt(ep.episodeNum?.toString().split('-')[0]) || 0);
+    const lastEpNum = Math.max(...episodeNums);
+    const totalCount = anime.totalEpisodes || lastEpNum;
+    let status = 'Ongoing';
+    if (lastEpNum === totalCount) status = 'Completed';
 
-    const prevBtn = document.getElementById('prevEpisodeBtn');
-    const nextBtn = document.getElementById('nextEpisodeBtn');
+    statusElem.textContent = `Status: ${status}`;
+    statusElem.classList.remove('status-ongoing', 'status-completed');
+    statusElem.classList.add(status === 'Completed' ? 'status-completed' : 'status-ongoing');
 
-    if (!prevBtn || !nextBtn) return;
+    // Episode Navigation Setup
+    function setupEpisodeNavigation(anime, currentEpNum) {
+        const episodes = [...anime.episodes].sort((a, b) => {
+            const aStart = parseInt(a.episodeNum?.toString().split('-')[0]);
+            const bStart = parseInt(b.episodeNum?.toString().split('-')[0]);
+            return aStart - bStart;
+        });
 
-    // Previous Button Logic
-    if (currentIndex > 0) {
-        const prevEpNum = episodes[currentIndex - 1].episodeNum;
-        prevBtn.disabled = false;
-        prevBtn.onclick = () => {
-            window.location.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${prevEpNum}`;
-        };
-    } else {
-        prevBtn.disabled = true;
+        const currentIndex = episodes.findIndex(ep => findMatchingEpisode([ep], currentEpNum));
+
+        const prevBtn = document.getElementById('prevEpisodeBtn');
+        const nextBtn = document.getElementById('nextEpisodeBtn');
+
+        if (!prevBtn || !nextBtn) return;
+
+        if (currentIndex > 0) {
+            const prevEpNum = parseInt(episodes[currentIndex - 1].episodeNum?.toString().split('-')[0]);
+            prevBtn.disabled = false;
+            prevBtn.onclick = () => {
+                window.location.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${prevEpNum}`;
+            };
+        } else {
+            prevBtn.disabled = true;
+        }
+
+        if (currentIndex < episodes.length - 1) {
+            const nextEpNum = parseInt(episodes[currentIndex + 1].episodeNum?.toString().split('-')[0]);
+            nextBtn.disabled = false;
+            nextBtn.onclick = () => {
+                window.location.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${nextEpNum}`;
+            };
+        } else {
+            nextBtn.disabled = true;
+        }
     }
 
-    // Next Button Logic
-    if (currentIndex < episodes.length - 1) {
-        const nextEpNum = episodes[currentIndex + 1].episodeNum;
-        nextBtn.disabled = false;
-        nextBtn.onclick = () => {
-            window.location.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${nextEpNum}`;
-        };
-    } else {
-        nextBtn.disabled = true;
-    }
-}
-
-
-    // --- Episode List Rendering ---
+    // Episode List Rendering
     episodeListGrid.innerHTML = '';
-    episodeListGrid.classList.add('episode-list-cards'); // Ensure this class is applied
+    episodeListGrid.classList.add('episode-list-cards');
 
-    const sortedEpisodes = [...anime.episodes].sort((a, b) => a.episodeNum - b.episodeNum);
+    const sortedEpisodes = [...anime.episodes].sort((a, b) => {
+        const aStart = parseInt(a.episodeNum?.toString().split('-')[0]);
+        const bStart = parseInt(b.episodeNum?.toString().split('-')[0]);
+        return aStart - bStart;
+    });
 
     sortedEpisodes.forEach(episode => {
         const episodeCard = document.createElement('div');
@@ -774,17 +784,17 @@ function setupEpisodeNavigation(anime, currentEpNum) {
         number.classList.add('episode-item-number');
         const updatedText = episode.updatedAt ? getTimeAgo(episode.updatedAt) : `Ep ${episode.episodeNum}`;
         number.textContent = updatedText;
-
         details.appendChild(number);
 
         episodeCard.appendChild(details);
         episodeListGrid.appendChild(episodeCard);
 
         episodeCard.addEventListener('click', () => {
-            window.location.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${episode.episodeNum}`;
+            const firstEp = parseInt(episode.episodeNum?.toString().split('-')[0]);
+            window.location.href = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${firstEp}`;
         });
 
-        if (episode.episodeNum === parseInt(episodeNum)) {
+        if (findMatchingEpisode([episode], episodeNum)) {
             episodeCard.classList.add('active-episode');
             const allElements = episodeCard.querySelectorAll('*');
             allElements.forEach(element => {
@@ -792,8 +802,8 @@ function setupEpisodeNavigation(anime, currentEpNum) {
             });
         }
     });
-    setupEpisodeNavigation(anime, parseInt(episodeNum));
 
+    setupEpisodeNavigation(anime, parseInt(episodeNum));
 }
 
 // --- Main Data Fetch and Page-Specific Logic ---

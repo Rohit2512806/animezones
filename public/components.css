@@ -1188,8 +1188,8 @@ footer {
 }
 .anime-card {
    gap: 10px;
-    width: 123px;
-    height: 174px;
+    width: 115px;
+    height: 165px;
 
   }
   .anime-card img {
@@ -1197,7 +1197,7 @@ footer {
     height: 200px;
   }
   .donghua-btn {
-  top: -148px;
+  top: -138px;
   
     }
   .new-series-section .anime-container {
@@ -1234,9 +1234,17 @@ footer {
   /* Anime Grid */
 .anime-grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
   margin-bottom: 2rem;
 }
+.anime-grid-container .anime-card {
+   gap: 10px;
+    width: 145px;
+    height: 195px;
+  }
+    .anime-grid-container .donghua-btn {
+   top: -168px;
+    }
 }
 
