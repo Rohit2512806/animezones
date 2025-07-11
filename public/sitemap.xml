@@ -1,11 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://animezones.vercel.app/</loc></url>
-  <url><loc>https://animezones.vercel.app/list.html</loc></url>
-  <url><loc>https://animezones.vercel.app/privacy.html</loc></url>
-  <url><loc>https://animezones.vercel.app/contact.html</loc></url>
-  <url><loc>https://animezones.vercel.app/video-player.html</loc></url>
-  <url><loc>https://animezones.vercel.app/anime-details.html</loc></url>
-  <url><loc>https://animezones.vercel.app/all-anime.html</loc></url>
-  <url><loc>https://animezones.vercel.app/admin.html</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+  <!-- Home Page -->
+  <url>
+    <loc>https://animezone.sbs/</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>1.00</priority>
+  </url>
+
+  <!-- All Anime -->
+  <url>
+    <loc>https://animezone.sbs/all-anime.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.80</priority>
+  </url>
+
+  <!-- Anime Detail Page (example) -->
+  <url>
+    <loc>https://animezone.sbs/naruto.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.64</priority>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://animezone.sbs/about.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.50</priority>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://animezone.sbs/contact.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.50</priority>
+  </url>
+
 </urlset>

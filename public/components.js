@@ -369,35 +369,52 @@ function displayCurrentPage(animeListToDisplay) {
     const gridContainer = document.getElementById('allAnimeGrid');
     if (!gridContainer || typeof window.allAnimeList === 'undefined') return;
 
-    gridContainer.innerHTML = ''; // Clear previous content
-
-    if (animeListToDisplay.length === 0) {
-        gridContainer.innerHTML = '<p style="color: var(--muted-text); text-align: center; padding: 20px;">No anime data available.</p>';
-        updatePaginationControls(0);
-        return;
+    // Show skeleton loader cards
+    gridContainer.innerHTML = '';
+    for (let i = 0; i < itemsPerPage; i++) {
+        const skeleton = document.createElement('div');
+        skeleton.className = 'skeleton-card';
+        skeleton.innerHTML = `
+            <div class="skeleton-thumbnail"></div>
+            <div class="skeleton-title"></div>
+            <div class="skeleton-subtitle"></div>
+        `;
+        gridContainer.appendChild(skeleton);
     }
 
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentItems = animeListToDisplay.slice(startIndex, endIndex);
+    // Simulate data delay (800ms)
+    setTimeout(() => {
+        gridContainer.innerHTML = ''; // Clear skeletons
 
-    if (currentItems.length === 0 && currentPage > 1) {
-        currentPage--;
-        displayCurrentPage(animeListToDisplay);
-        return;
-    } else if (currentItems.length === 0) {
-        gridContainer.innerHTML = '<p style="color: var(--muted-text); text-align: center; padding: 20px;">No anime found matching criteria.</p>';
-        updatePaginationControls(0);
-        return;
-    }
+        if (animeListToDisplay.length === 0) {
+            gridContainer.innerHTML = '<p style="color: var(--muted-text); text-align: center; padding: 20px;">No anime data available.</p>';
+            updatePaginationControls(0);
+            return;
+        }
 
-    currentItems.forEach(anime => {
-        const animeCardElement = createAnimeCard(anime, false);
-        gridContainer.appendChild(animeCardElement);
-    });
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const currentItems = animeListToDisplay.slice(startIndex, endIndex);
 
-    updatePaginationControls(animeListToDisplay.length);
+        if (currentItems.length === 0 && currentPage > 1) {
+            currentPage--;
+            displayCurrentPage(animeListToDisplay);
+            return;
+        } else if (currentItems.length === 0) {
+            gridContainer.innerHTML = '<p style="color: var(--muted-text); text-align: center; padding: 20px;">No anime found matching criteria.</p>';
+            updatePaginationControls(0);
+            return;
+        }
+
+        currentItems.forEach(anime => {
+            const animeCardElement = createAnimeCard(anime, false);
+            gridContainer.appendChild(animeCardElement);
+        });
+
+        updatePaginationControls(animeListToDisplay.length);
+    }, ); // 800ms delay to simulate loading
 }
+
 
 // All Anime page: Update pagination controls
 function updatePaginationControls(totalItems) {
@@ -1220,5 +1237,5 @@ async function loadComponents() {
 document.addEventListener('DOMContentLoaded', () => {
   loadComponents();
   loadNewSeriesSection();
-  loadGenreSection();
+  loadGenreSection();   displayCurrentPage(new Array(itemsPerPage).fill({}));
 });
