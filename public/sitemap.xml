@@ -17,25 +17,58 @@
     <priority>0.80</priority>
   </url>
 
-  <!-- Anime Detail Page (example) -->
+  <!-- Anime Details -->
   <url>
-    <loc>https://animezone.sbs/naruto.html</loc>
+    <loc>https://animezone.sbs/anime-details.html</loc>
     <lastmod>2025-07-10T15:15:50+00:00</lastmod>
-    <priority>0.64</priority>
+    <priority>0.70</priority>
+  </url>
+ <!-- Anime Details -->
+  <url>
+<loc>https://animezone.sbs/anime-detail.html?title=Battle%20Through%20the%20Heavens</loc>
+<lastmod>2025-07-10T15:15:50+00:00</lastmod>
+<priority>0.64</priority>
+</url>
+  <!-- Video Player -->
+  <url>
+    <loc>https://animezone.sbs/video-player.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.70</priority>
   </url>
 
-  <!-- About Page -->
+  <!-- List Page -->
+  <url>
+    <loc>https://animezone.sbs/list.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.60</priority>
+  </url>
+
+  <!-- Admin Page -->
+  <url>
+    <loc>https://animezone.sbs/admin.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.40</priority>
+  </url>
+
+  <!-- About -->
   <url>
     <loc>https://animezone.sbs/about.html</loc>
     <lastmod>2025-07-10T15:15:50+00:00</lastmod>
     <priority>0.50</priority>
   </url>
 
-  <!-- Contact Page -->
+  <!-- Contact -->
   <url>
     <loc>https://animezone.sbs/contact.html</loc>
     <lastmod>2025-07-10T15:15:50+00:00</lastmod>
     <priority>0.50</priority>
+  </url>
+
+  <!-- Privacy -->
+  <url>
+    <loc>https://animezone.sbs/privacy.html</loc>
+    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
+    <priority>0.30</priority>
   </url>
 
 </urlset>
