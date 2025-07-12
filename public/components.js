@@ -156,19 +156,19 @@ function renderLatestAnime(animeList) {
     const latestToShow = sortedEpisodes.slice(0, 20);
 
     latestToShow.forEach(ep => {
-        const placeholderCard = createSkeletonCard();
+        const placeholderCard = createSkeletonCard(); // 🔹 Step 1: create skeleton
         latestAnimeGrid.appendChild(placeholderCard);
 
-        const delay = Math.random() * 1000 + 200;
+        const delay = Math.random() * 1000 + 200; // 1 to 4 sec
 
         setTimeout(() => {
-            const realCard = createAnimeCard(ep.anime, false, ep.episode);
+            const realCard = createAnimeCard(ep.anime, false, ep.episode); // 🔹 Step 2: real content
             latestAnimeGrid.replaceChild(realCard, placeholderCard);
         }, delay);
     });
 }
 
-// renderAllAnime section
+//renderAllAnime section
 function renderAllAnime(animeList) {
     const allAnimeGrid = document.getElementById('allAnimeGrid');
     if (!allAnimeGrid) return;
@@ -196,7 +196,6 @@ function renderAllAnime(animeList) {
         }, delay);
     });
 }
-
 function createSkeletonCard() {
     const card = document.createElement('div');
     card.className = 'anime-card loading';
@@ -228,7 +227,7 @@ function setupRecommendationButtons() {
               displayRecommendations(dramaAnime);
           });
     }
-
+    
     if (btnHistorical) {
         btnHistorical.addEventListener('click', () => {
             const HistoricalAnime = filterRecommendationsByGenre("Historical");
@@ -251,32 +250,20 @@ function setupRecommendationButtons() {
     }
 }
 
-// Home page: Display recommendations with skeleton loader
+// Home page: Display recommendations
 function displayRecommendations(animeList) {
     const recommendationGrid = document.getElementById('recommendationGrid');
-    if (!recommendationGrid) return;
-
-    recommendationGrid.innerHTML = '';
-
-    const numberOfRecommendationsToShow = 5;
-    const limitedAnimeList = animeList.slice(0, numberOfRecommendationsToShow);
-
-    // Step 1: Add skeleton cards first
-    const placeholders = [];
-    for (let i = 0; i < limitedAnimeList.length; i++) {
-        const skeleton = createSkeletonCard();
-        placeholders.push(skeleton);
-        recommendationGrid.appendChild(skeleton);
+    if (recommendationGrid) {
+        recommendationGrid.innerHTML = '';
+        if (animeList) {
+            const numberOfRecommendationsToShow = 5;
+            const limitedAnimeList = animeList.slice(0, numberOfRecommendationsToShow);
+            limitedAnimeList.forEach(anime => {
+                const animeElement = createAnimeCard(anime, true); // true for recommendation styling
+                recommendationGrid.appendChild(animeElement);
+            });
+        }
     }
-
-    // Step 2: Replace with real cards after delay
-    limitedAnimeList.forEach((anime, index) => {
-        const delay = Math.random() * 1000 + 200;
-        setTimeout(() => {
-            const realCard = createAnimeCard(anime, true); // true = recommendation style
-            recommendationGrid.replaceChild(realCard, placeholders[index]);
-        }, delay);
-    });
 }
 
 // Home page: Load new series section
@@ -425,7 +412,7 @@ function displayCurrentPage(animeListToDisplay) {
         });
 
         updatePaginationControls(animeListToDisplay.length);
-    }, 800); // 800ms delay to simulate loading
+    }, ); // 800ms delay to simulate loading
 }
 
 
@@ -837,7 +824,7 @@ function displayVideoPlayerDetails(anime, episodeNum) {
 }
 
 // --- Main Data Fetch and Page-Specific Logic ---
-fetch('https://api.animezone.sbs/anime')
+fetch('https://animezones-64tp.onrender.com/anime')
 
     .then(response => {
         if (!response.ok) {
