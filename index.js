@@ -9,7 +9,14 @@ const client = new MongoClient(process.env.MONGO_URI);
 
 let animeCollection;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:3000", 
+    "https://animezone.sbs",         // Frontend
+    "https://api.animezone.sbs"      // Backend custom domain (Render)
+  ]
+}));
+
 app.use(express.json());
 app.use(express.static("public"));
 
