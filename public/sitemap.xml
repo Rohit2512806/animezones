@@ -50,16 +50,9 @@
     <priority>0.40</priority>
   </url>
 
-  <!-- About -->
-  <url>
-    <loc>https://animezone.sbs/about.html</loc>
-    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
-    <priority>0.50</priority>
-  </url>
-
   <!-- Contact -->
   <url>
-    <loc>https://animezone.sbs/contact.html</loc>
+    <loc>https://animezone.sbs/Contact.html</loc>
     <lastmod>2025-07-10T15:15:50+00:00</lastmod>
     <priority>0.50</priority>
   </url>
