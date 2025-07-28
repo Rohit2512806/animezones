@@ -823,99 +823,101 @@ function displayVideoPlayerDetails(anime, episodeNum) {
     setupEpisodeNavigation(anime, parseInt(episodeNum));
 }
 
-// --- Main Data Fetch and Page-Specific Logic ---
-fetch('https://animezones-mongouri.up.railway.app/anime')
+const primaryURL = 'https://animezones-64tp.onrender.com/anime';
+const fallbackURL = 'https://animezones-mongouri.up.railway.app/anime';
 
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        window.allAnimeList = data; // Store in global variable
-        
-        const currentPagePath = window.location.pathname;
+function fetchAndHandleData(apiURL) {
+    return fetch(apiURL)
+        .then(response => {
+            if (!response.ok) throw new Error();
+            return response.json();
+        });
+}
 
-        // --- Logic for index.html ---
-        if (currentPagePath === '/' || currentPagePath.includes('index.html')) {
-            renderLatestAnime(data);
-            setupRecommendationButtons();
-            const defaultDramaAnime = window.allAnimeList.filter(anime => anime.genre && (Array.isArray(anime.genre) ? anime.genre.includes("Drama") : anime.genre === "Drama"));
-            displayRecommendations(defaultDramaAnime);
-            loadNewSeriesSection();
-            loadGenreSection();
-        }
-        // --- Logic for all-anime.html ---
-        else if (currentPagePath.includes('all-anime.html')) {
-            filteredAnimeList = [...data];
-            displayCurrentPage(filteredAnimeList);
-            setupAllAnimePageListeners();
-            loadNewSeriesSection();
-            loadGenreSection();
-        }
-        // --- Logic for anime-detail.html ---
-        else if (currentPagePath.includes('anime-detail.html')) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const animeTitle = urlParams.get('title');
-            if (animeTitle) {
-                const anime = window.getAnimeByTitle(decodeURIComponent(animeTitle));
-                if (anime) {
-                    displayAnimeDetails(anime);
-                } else {
-                    const detailContainer = document.getElementById('animeDetailContainer');
-                    if(detailContainer) {
-                        detailContainer.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Sorry, anime details not found.</p>';
-                    }
-                }
-            } else {
-                 const detailContainer = document.getElementById('animeDetailContainer');
-                    if(detailContainer) {
-                        detailContainer.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Sorry, no anime selected to display details.</p>';
-                    }
+function handleAnimeData(data) {
+    window.allAnimeList = data;
+    const currentPagePath = window.location.pathname;
+
+    if (currentPagePath === '/' || currentPagePath.includes('index.html')) {
+        renderLatestAnime(data);
+        setupRecommendationButtons();
+        const defaultDramaAnime = window.allAnimeList.filter(anime => anime.genre && (Array.isArray(anime.genre) ? anime.genre.includes("Drama") : anime.genre === "Drama"));
+        displayRecommendations(defaultDramaAnime);
+        loadNewSeriesSection();
+        loadGenreSection();
+    }
+
+    else if (currentPagePath.includes('all-anime.html')) {
+        filteredAnimeList = [...data];
+        displayCurrentPage(filteredAnimeList);
+        setupAllAnimePageListeners();
+        loadNewSeriesSection();
+        loadGenreSection();
+    }
+
+    else if (currentPagePath.includes('anime-detail.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const animeTitle = urlParams.get('title');
+        const detailContainer = document.getElementById('animeDetailContainer');
+
+        if (animeTitle) {
+            const anime = window.getAnimeByTitle(decodeURIComponent(animeTitle));
+            if (anime) {
+                displayAnimeDetails(anime);
+            } else if (detailContainer) {
+                detailContainer.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Sorry, anime details not found.</p>';
             }
-            loadNewSeriesSection();
-            loadGenreSection();
+        } else if (detailContainer) {
+            detailContainer.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Sorry, no anime selected to display details.</p>';
         }
-        // --- Logic for video-player.html ---
-        else if (currentPagePath.includes('video-player.html')) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const animeTitle = urlParams.get('title');
-            const episodeNum = urlParams.get('ep');
 
-            if (animeTitle && episodeNum) {
-                const anime = window.getAnimeByTitle(decodeURIComponent(animeTitle));
-                if (anime) {
-                    displayVideoPlayerDetails(anime, episodeNum); // This is now handled in components.js
-                } else {
-                    const videoPlayerSection = document.getElementById('videoPlayerSection');
-                    if (videoPlayerSection) {
-                        videoPlayerSection.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Anime not found for playback.</p>';
-                    }
-                }
-            } else {
-                const videoPlayerSection = document.getElementById('videoPlayerSection');
-                if (videoPlayerSection) {
-                    videoPlayerSection.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Please select an anime episode to watch.</p>';
-                }
+        loadNewSeriesSection();
+        loadGenreSection();
+    }
+
+    else if (currentPagePath.includes('video-player.html')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const animeTitle = urlParams.get('title');
+        const episodeNum = urlParams.get('ep');
+        const videoPlayerSection = document.getElementById('videoPlayerSection');
+
+        if (animeTitle && episodeNum) {
+            const anime = window.getAnimeByTitle(decodeURIComponent(animeTitle));
+            if (anime) {
+                displayVideoPlayerDetails(anime, episodeNum);
+            } else if (videoPlayerSection) {
+                videoPlayerSection.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Anime not found for playback.</p>';
             }
-            loadNewSeriesSection();
-            loadGenreSection();
+        } else if (videoPlayerSection) {
+            videoPlayerSection.innerHTML = '<p style="text-align: center; color: var(--muted-text);">Please select an anime episode to watch.</p>';
         }
-         else if (currentPagePath.includes('list.html')) {
-          loadNewSeriesSection();
-            loadGenreSection();  
-         }
-    })
-    .catch(error => {
-        const mainContent = document.getElementById('mainContent'); // Fallback for any page
-        if (mainContent) {
-            mainContent.innerHTML = `<p style="color: red; text-align: center; padding: 20px;">
-                Error loading anime data. Please try refreshing.
-                Ensure your backend server is running at https://animezones-64tp.onrender.com.
-            </p>`;
-        }
+
+        loadNewSeriesSection();
+        loadGenreSection();
+    }
+
+    else if (currentPagePath.includes('list.html')) {
+        loadNewSeriesSection();
+        loadGenreSection();
+    }
+}
+
+fetchAndHandleData(primaryURL)
+    .then(handleAnimeData)
+    .catch(() => {
+        fetchAndHandleData(fallbackURL)
+            .then(handleAnimeData)
+            .catch(() => {
+                const mainContent = document.getElementById('mainContent');
+                if (mainContent) {
+                    mainContent.innerHTML = `<p style="color: red; text-align: center; padding: 20px;">
+                        Error loading anime data. Please try refreshing.
+                        Ensure your backend server is running at either API URL.
+                    </p>`;
+                }
+            });
     });
+
 
 // --- Header/Nav Related Functions ---
 
