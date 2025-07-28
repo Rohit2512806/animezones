@@ -12,7 +12,8 @@ let animeCollection;
 app.use(cors({
   origin: [
     "http://localhost:3000", 
-    "https://animezone.sbs",         // Frontend
+    "https://animezone.sbs",  
+    "https://animezones-mongouri.up.railway.app/",       // Frontend
     "https://api.animezone.sbs"      // Backend custom domain (Render)
   ]
 }));
