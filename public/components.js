@@ -153,7 +153,7 @@ function renderLatestAnime(animeList) {
         return new Date(b.updatedAt) - new Date(a.updatedAt);
     });
 
-    const latestToShow = sortedEpisodes.slice(0, 20);
+    const latestToShow = sortedEpisodes.slice(0, 27);
 
     latestToShow.forEach(ep => {
         const placeholderCard = createSkeletonCard(); // 🔹 Step 1: create skeleton
@@ -256,7 +256,7 @@ function displayRecommendations(animeList) {
     if (recommendationGrid) {
         recommendationGrid.innerHTML = '';
         if (animeList) {
-            const numberOfRecommendationsToShow = 5;
+            const numberOfRecommendationsToShow = 8;
             const limitedAnimeList = animeList.slice(0, numberOfRecommendationsToShow);
             limitedAnimeList.forEach(anime => {
                 const animeElement = createAnimeCard(anime, true); // true for recommendation styling
@@ -287,7 +287,7 @@ function populateNewSeriesSection() {
     if (newAnimeSeriesGrid && typeof window.allAnimeList !== 'undefined') {
         const sortedAnimeList = [...window.allAnimeList].sort((a, b) => new Date(b.uploadDate) - new Date(a.uploadDate));
 
-        const numberOfAnimeToShow = 10;
+        const numberOfAnimeToShow = 14;
         const limitedAnimeList = sortedAnimeList.slice(0, numberOfAnimeToShow);
         if (limitedAnimeList.length > 0) {
             newAnimeSeriesGrid.innerHTML = '';
@@ -360,7 +360,7 @@ function populateGenreSection() {
 }
 
 // All Anime page: Global variables for pagination
-let itemsPerPage = 16;
+let itemsPerPage = 20;
 let currentPage = 1;
 let filteredAnimeList = []; // This will hold the list for pagination
 
