@@ -13,7 +13,7 @@ app.use(cors({
   origin: [
     "http://localhost:3000", 
     "https://animezone.sbs",  
-    "https://animezone.vercel.app",
+    "https://animezones.vercel.app",
     "https://animezones-mongouri.up.railway.app/",       // Frontend
     "https://api.animezone.sbs"      // Backend custom domain (Render)
   ]
