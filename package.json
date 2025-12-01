@@ -4,9 +4,12 @@
   "description": "Anime API backend with static frontend",
   "main": "index.js",
   "scripts": {
-    
-    "start": "node index.js"
-  },
+  "start": "node index.js",
+  "generate": "node scripts/generate-static.js",
+  "sitemap": "node scripts/generate-sitemap.js",
+  "build-all": "npm run generate && npm run sitemap"
+}
+,
   "author": "Aapka Naam",
   "license": "MIT",
   "dependencies": {
