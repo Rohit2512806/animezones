@@ -1047,7 +1047,9 @@ function filterAnime() {
         if (results.length > 0) {
             results.forEach(anime => {
                 const link = document.createElement('a');
-                link.href = `anime-detail.html?title=${encodeURIComponent(anime.title)}`;
+               const slug = slugify(anime.title);
+link.href = `/anime/${slug}.html`;
+
                 link.style.textDecoration = 'none';
                 link.style.color = 'inherit';
 
