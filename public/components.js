@@ -1231,6 +1231,8 @@ async function loadComponents() {
             </p>`;
         }
     }
+    document.dispatchEvent(new Event("componentsLoaded"));
+
 }
 
 // Call loadComponents when the DOM is fully loaded

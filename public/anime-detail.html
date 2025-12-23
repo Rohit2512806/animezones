@@ -427,107 +427,66 @@
        <div id="genreListPlaceholder"></div>
     <div id="footer-placeholder"></div>
     <script src="components.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const animeTitle = urlParams.get('title');
-            const animeDetailContainer = document.getElementById('animeDetailContainer');
-            const videoPlayer = document.getElementById('videoPlayer');
-            const currentEpisodeNumberDisplay = document.getElementById('currentEpisodeNumber');
-            const watchAnimeSection = document.getElementById('watchAnimeSection');
-            const episodeListSection = document.getElementById('episodeListSection');
+   <script>
+document.addEventListener('componentsLoaded', () => {
 
-            if (animeTitle && typeof allAnimeList !== 'undefined') {
-                const anime = allAnimeList.find(a => a.title === decodeURIComponent(animeTitle));
-                if (anime) {
-                    displayAnimeDetails(anime);
-                    populateEpisodeList(anime.episodes);
-                } else {
-                    if (animeDetailContainer) {
-                        animeDetailContainer.innerHTML = '<p style="text-align: center; color: red; padding: 20px;">Anime not found!</p>';
-                    }
-                    if (watchAnimeSection) watchAnimeSection.style.display = 'none';
-                    if (episodeListSection) episodeListSection.style.display = 'none';
-                }
-            } else {
-                if (animeDetailContainer) {
-                    animeDetailContainer.innerHTML = '<p style="text-align: center; color: red; padding: 20px;">No anime title provided in the URL.</p>';
-                }
-                if (watchAnimeSection) watchAnimeSection.style.display = 'none';
-                if (episodeListSection) episodeListSection.style.display = 'none';
-            }
-        });
+    const params = new URLSearchParams(window.location.search);
+    const animeTitle = decodeURIComponent(params.get('title') || '');
 
-        function populateEpisodeList(episodes) {
-                episodeListCards.innerHTML = ''; 
-            const episodeListCards = document.getElementById('episodeListCards');
-            const watchAnimeTitle = document.getElementById('watchAnimeTitle');
-            const animeTitleElement = document.getElementById('animeTitle');
-            const allEpisodesAnimeTitle = animeTitleElement ? animeTitleElement.textContent : '';
-            if (episodeListCards && episodes && episodes.length > 0) {
-                if (watchAnimeTitle) {
-                    watchAnimeTitle.textContent = allEpisodesAnimeTitle;
-                }
-                episodes.forEach(episode => {
-                    const episodeCard = document.createElement('div');
-                    episodeCard.classList.add('episode-list-item-card');
-                    episodeCard.dataset.episodeNumber = episode.episodeNumber; // Store episode number
+    if (!animeTitle || typeof allAnimeList === "undefined") {
+        document.getElementById('animeDetailContainer').innerHTML =
+            "<p style='color:red;text-align:center'>Anime not found</p>";
+        return;
+    }
 
-                    if (episode.thumbnailUrl) {
-                        const image = document.createElement('img');
-                        image.src = episode.thumbnailUrl;
-                        image.alt = `Episode ${episode.episodeNumber} Thumbnail`;
-                        image.classList.add('episode-item-image');
-                        episodeCard.appendChild(image);
-                    }
+    const anime = allAnimeList.find(a => a.title === animeTitle);
 
-                    const details = document.createElement('div');
-                    details.classList.add('episode-item-details');
+    if (!anime) {
+        document.getElementById('animeDetailContainer').innerHTML =
+            "<p style='color:red;text-align:center'>Anime not found</p>";
+        return;
+    }
 
-                    const title = document.createElement('h3');
-                    title.classList.add('episode-item-title');
-                    title.textContent = episode.title || `Episode ${episode.episodeNumber}`;
-                    details.appendChild(title);
+    displayAnimeDetails(anime);
+    populateEpisodeList(anime);
+});
 
-                    const number = document.createElement('span');
-                    number.classList.add('episode-item-number');
-                    number.textContent = `Episode ${episode.episodeNumber}`;
-                    details.appendChild(number);
+function populateEpisodeList(anime) {
 
-                    episodeCard.addEventListener('click', () => {
-                        const videoPlayerSection = document.getElementById('watchAnimeSection');
-                        const episodeNumberDisplay = document.getElementById('currentEpisodeNumber');
-                        if (videoPlayerSection && episodeNumberDisplay) {
-                            episodeNumberDisplay.textContent = `Episode: ${episode.episodeNumber}`;
-                            videoPlayerSection.style.display = 'block';
-                            // Here you would typically load the video for the selected episode
-                            console.log(`Playing episode: ${episode.episodeNumber}`);
-                        }
-                    });
+    const list = document.getElementById('episodeListCards');
+    const videoFrame = document.getElementById('animeVideoFrame');
+    const watchSection = document.getElementById('watchAnimeSection');
+    const episodeText = document.getElementById('currentEpisodeNumber');
 
-                    episodeCard.appendChild(details);
-                    episodeListCards.appendChild(episodeCard);
-                });
+    list.innerHTML = '';
 
-                // Set First and Last Episode links (optional, adjust as needed)
-                const firstEpisodeLink = document.getElementById('firstEpisodeLink');
-                const lastEpisodeLink = document.getElementById('lastEpisodeLink');
-                const firstEpisodeNum = document.getElementById('firstEpisodeNum');
-                const lastEpisodeNum = document.getElementById('lastEpisodeNum');
+    anime.episodes.forEach(ep => {
 
-                if (firstEpisodeLink && lastEpisodeLink && firstEpisodeNum && lastEpisodeNum) {
-                    firstEpisodeLink.href = `#episode-${episodes[0].episodeNumber}`;
-                    firstEpisodeNum.textContent = episodes[0].episodeNumber;
-                    lastEpisodeLink.href = `#episode-${episodes[episodes.length - 1].episodeNumber}`;
-                    lastEpisodeNum.textContent = episodes[episodes.length - 1].episodeNumber;
-                }
-            } else if (episodeListCards) {
-                episodeListCards.innerHTML = '<p>No episodes found for this anime.</p>';
-                const watchAnimeSection = document.getElementById('watchAnimeSection');
-                if (watchAnimeSection) watchAnimeSection.style.display = 'none';
-            }
-        }
+        const card = document.createElement('div');
+        card.className = 'episode-list-item-card';
 
-    </script>
+        card.innerHTML = `
+            <div class="episode-item-details">
+                <div class="episode-item-title">${ep.title || 'Episode ' + ep.episodeNumber}</div>
+                <div class="episode-item-number">Episode ${ep.episodeNumber}</div>
+            </div>
+        `;
+
+        card.onclick = () => {
+            watchSection.style.display = 'block';
+            episodeText.textContent = `Episode: ${ep.episodeNumber}`;
+            videoFrame.src = ep.embedUrl;
+            window.scrollTo({ top: watchSection.offsetTop - 80, behavior: 'smooth' });
+        };
+
+        list.appendChild(card);
+    });
+
+    document.getElementById('firstEpisodeNum').textContent = anime.episodes[0].episodeNumber;
+    document.getElementById('lastEpisodeNum').textContent =
+        anime.episodes[anime.episodes.length - 1].episodeNumber;
+}
+</script>
+
     </body>
 </html>

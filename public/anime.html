@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anime | AnimeZone</title>
+  <meta name="description" content="Watch anime online on AnimeZone">
+  <link rel="stylesheet" href="/components.css">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+<div id="nav-placeholder"></div>
+
+<div id="mainContent">
+  <div id="animeDetailContainer"></div>
+</div>
+
+<div id="newSeriesPlaceholder"></div>
+<div id="genreListPlaceholder"></div>
+<div id="footer-placeholder"></div>
+
+<script src="/components.js"></script>
+
+<script>
+document.addEventListener("componentsLoaded", () => {
+
+  // URL se slug nikalo
+  const slug = location.pathname.split("/").pop();
+
+  // slug se anime find karo
+  const anime = allAnimeList.find(a =>
+    a.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") === slug
+  );
+
+  if (!anime) {
+    document.getElementById("mainContent").innerHTML =
+      "<h2 style='text-align:center'>Anime not found</h2>";
+    return;
+  }
+
+  // SEO update
+  document.title = anime.title + " | Watch Online";
+  document.querySelector("meta[name='description']")
+    .setAttribute("content", anime.description?.slice(0, 150) || "");
+
+  // SAME UI function
+  displayAnimeDetails(anime);
+});
+</script>
+
+</body>
+</html>
