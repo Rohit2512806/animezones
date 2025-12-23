@@ -428,96 +428,65 @@
     <div id="footer-placeholder"></div>
     <script src="components.js"></script>
    <script>
-/* 🔥 Slug helper (same as components.js) */
-function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
 document.addEventListener('componentsLoaded', () => {
 
-const pathParts = window.location.pathname.split('/');
-const slug = pathParts[pathParts.length - 1];// ✅ slug read karega, title nahi
+    const params = new URLSearchParams(window.location.search);
+    const animeTitle = decodeURIComponent(params.get('title') || '');
 
-  if (!slug || typeof allAnimeList === "undefined") {
-    document.getElementById('animeDetailContainer').innerHTML =
-      "<p style='color:red;text-align:center'>Anime not found</p>";
-    return;
-  }
+    if (!animeTitle || typeof allAnimeList === "undefined") {
+        document.getElementById('animeDetailContainer').innerHTML =
+            "<p style='color:red;text-align:center'>Anime not found</p>";
+        return;
+    }
 
-  // ✅ slug se anime find karo
-const anime = allAnimeList.find(
-  a => slugify(a.title) === slug
-);
+    const anime = allAnimeList.find(a => a.title === animeTitle);
 
-  if (!anime) {
-    document.getElementById('animeDetailContainer').innerHTML =
-      "<p style='color:red;text-align:center'>Anime not found</p>";
-    return;
-  }
+    if (!anime) {
+        document.getElementById('animeDetailContainer').innerHTML =
+            "<p style='color:red;text-align:center'>Anime not found</p>";
+        return;
+    }
 
-  /* 🔥 SEO improvement */
-  document.title = `${anime.title} | AnimeZone`;
-  const metaDesc = document.querySelector('meta[name="description"]');
-  if (metaDesc) {
-    metaDesc.setAttribute(
-      "content",
-      `Watch ${anime.title} all episodes online for free on AnimeZone`
-    );
-  }
-
-  displayAnimeDetails(anime);
-  populateEpisodeList(anime);
+    displayAnimeDetails(anime);
+    populateEpisodeList(anime);
 });
 
-/* ---------- Episode List ---------- */
 function populateEpisodeList(anime) {
 
-  const list = document.getElementById('episodeListCards');
-  const watchSection = document.getElementById('watchAnimeSection');
-  const episodeText = document.getElementById('currentEpisodeNumber');
+    const list = document.getElementById('episodeListCards');
+    const videoFrame = document.getElementById('animeVideoFrame');
+    const watchSection = document.getElementById('watchAnimeSection');
+    const episodeText = document.getElementById('currentEpisodeNumber');
 
-  list.innerHTML = '';
+    list.innerHTML = '';
 
-  const slug = slugify(anime.title);
+    anime.episodes.forEach(ep => {
 
-  anime.episodes.forEach(ep => {
+        const card = document.createElement('div');
+        card.className = 'episode-list-item-card';
 
-    const card = document.createElement('div');
-    card.className = 'episode-list-item-card';
+        card.innerHTML = `
+            <div class="episode-item-details">
+                <div class="episode-item-title">${ep.title || 'Episode ' + ep.episodeNumber}</div>
+                <div class="episode-item-number">Episode ${ep.episodeNumber}</div>
+            </div>
+        `;
 
-    card.innerHTML = `
-      <div class="episode-item-details">
-        <div class="episode-item-title">
-          ${ep.title || 'Episode ' + ep.episodeNum}
-        </div>
-        <div class="episode-item-number">
-          Episode ${ep.episodeNum}
-        </div>
-      </div>
-    `;
+        card.onclick = () => {
+            watchSection.style.display = 'block';
+            episodeText.textContent = `Episode: ${ep.episodeNumber}`;
+            videoFrame.src = ep.embedUrl;
+            window.scrollTo({ top: watchSection.offsetTop - 80, behavior: 'smooth' });
+        };
 
-    // ✅ Clean URL episode
-    card.onclick = () => {
-      window.location.href = `/anime/${slug}/episode-${ep.episodeNum}`;
-    };
+        list.appendChild(card);
+    });
 
-    list.appendChild(card);
-  });
-
-  document.getElementById('firstEpisodeNum').textContent =
-    anime.episodes[0].episodeNum;
-
-  document.getElementById('lastEpisodeNum').textContent =
-    anime.episodes[anime.episodes.length - 1].episodeNum;
+    document.getElementById('firstEpisodeNum').textContent = anime.episodes[0].episodeNumber;
+    document.getElementById('lastEpisodeNum').textContent =
+        anime.episodes[anime.episodes.length - 1].episodeNumber;
 }
 </script>
-
 
     </body>
 </html>
