@@ -4,6 +4,15 @@
 window.allAnimeList = [];
 
 // --- Helper Functions ---
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
 
 // Function to create an anime card
 function createAnimeCard(anime, isRecommendation, episode = null) {
@@ -15,15 +24,16 @@ function createAnimeCard(anime, isRecommendation, episode = null) {
 
     const epNum = episode ? episode.episodeNum : (anime.episodes?.at(-1)?.episodeNum || 1);
 
-    if (episode) {
-        targetUrl = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${epNum}`;
-    } else if (isRecommendation) {
-        if (anime.episodes && anime.episodes.length > 0) {
-            targetUrl = `anime-detail.html?title=${encodeURIComponent(anime.title)}`;
-        }
-    } else {
-         targetUrl = `video-player.html?title=${encodeURIComponent(anime.title)}&ep=${epNum}`;
-    }
+   const slug = slugify(anime.title);
+
+if (episode) {
+  targetUrl = `/anime/${slug}/episode-${epNum}`;
+} else if (isRecommendation) {
+  targetUrl = `/anime/${slug}`;
+} else {
+  targetUrl = `/anime/${slug}/episode-${epNum}`;
+}
+
 
     link.href = targetUrl;
     link.style.textDecoration = 'none';
@@ -293,7 +303,10 @@ function populateNewSeriesSection() {
             newAnimeSeriesGrid.innerHTML = '';
             limitedAnimeList.forEach(anime => {
                 const link = document.createElement('a');
-                link.href = `anime-detail.html?title=${encodeURIComponent(anime.title)}`;
+
+ const slug = slugify(anime.title);
+link.href = `/anime/${slug}`;
+
                 link.style.textDecoration = 'none';
                 link.style.color = 'inherit';
 
@@ -500,7 +513,10 @@ function displayAnimeDetails(anime) {
         </div>
 
         <div class="anime-detail-actions">
-            <a href="video-player.html?title=${encodeURIComponent(anime.title)}&ep=${anime.episodes && anime.episodes.length > 0 ? anime.episodes[0].episodeNum : 1}" class="watch-now-btn">
+           const slug = slugify(anime.title);
+
+<a href="/anime/${slug}/episode-1" class="watch-now-btn">
+
                 Watch Now (First Episode)
             </a>
         </div>
@@ -1047,8 +1063,9 @@ function filterAnime() {
         if (results.length > 0) {
             results.forEach(anime => {
                 const link = document.createElement('a');
-               const slug = slugify(anime.title);
-link.href = `/anime/${slug}.html`;
+
+                const slug = slugify(anime.title);
+link.href = `/anime/${slug}`;
 
                 link.style.textDecoration = 'none';
                 link.style.color = 'inherit';
@@ -1123,8 +1140,9 @@ window.filterAnimeByGenre = function(selectedGenre) {
     if (filteredAnime.length > 0) {
         filteredAnime.forEach(anime => {
             const link = document.createElement('a');
-          const slug = slugify(anime.title);
-link.href = `/anime/${slug}.html`;
+            
+           const slug = slugify(anime.title);
+link.href = `/anime/${slug}`;
 
             link.style.textDecoration = 'none';
             link.style.color = 'inherit';
@@ -1149,16 +1167,6 @@ link.href = `/anime/${slug}.html`;
         searchResultsContainer.innerHTML = `<p style="color: var(--muted-text); text-align: center; padding: 20px;">No anime found for genre: "${selectedGenre}".</p>`;
     }
 };
-function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .trim()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
 
 // --- Setup Functions to attach Event Listeners ---
 function setupSearchFunctionality() {
