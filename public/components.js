@@ -1121,7 +1121,9 @@ window.filterAnimeByGenre = function(selectedGenre) {
     if (filteredAnime.length > 0) {
         filteredAnime.forEach(anime => {
             const link = document.createElement('a');
-            link.href = `anime-detail.html?title=${encodeURIComponent(anime.title)}`;
+          const slug = slugify(anime.title);
+link.href = `/anime/${slug}.html`;
+
             link.style.textDecoration = 'none';
             link.style.color = 'inherit';
 
@@ -1145,6 +1147,16 @@ window.filterAnimeByGenre = function(selectedGenre) {
         searchResultsContainer.innerHTML = `<p style="color: var(--muted-text); text-align: center; padding: 20px;">No anime found for genre: "${selectedGenre}".</p>`;
     }
 };
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 
 // --- Setup Functions to attach Event Listeners ---
 function setupSearchFunctionality() {
