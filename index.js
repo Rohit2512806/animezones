@@ -4,7 +4,6 @@ console.log("Loaded MONGO_URI:", process.env.MONGO_URI);
 const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
-const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,21 +23,6 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.static("public"));
-
-// ✅ SEO Anime Detail Page
-app.get("/anime/:slug", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "public", "anime-detail.html")
-  );
-});
-
-// ✅ SEO Episode Page
-app.get("/episode/:slug", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "public", "video-player.html")
-  );
-});
-
 
  /* Root route to confirm API is working*/
 app.get("/", (req, res) => {
