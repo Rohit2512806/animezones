@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Episode | AnimeZone</title>
+  <meta name="description" content="Watch anime episode online">
+  <link rel="stylesheet" href="/components.css">
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+<div id="nav-placeholder"></div>
+
+<div id="mainContent">
+  <div id="videoPlayerSection"></div>
+</div>
+
+<div id="newSeriesPlaceholder"></div>
+<div id="genreListPlaceholder"></div>
+<div id="footer-placeholder"></div>
+
+<script src="/components.js"></script>
+
+<script>
+document.addEventListener("componentsLoaded", () => {
+
+  // URL: /episode/perfect-world-123
+  const parts = location.pathname.split("/").pop().split("-");
+  const episodeNum = parts.pop();
+  const animeSlug = parts.join("-");
+
+  const anime = allAnimeList.find(a =>
+    a.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") === animeSlug
+  );
+
+  if (!anime) {
+    document.getElementById("mainContent").innerHTML =
+      "<h2 style='text-align:center'>Anime not found</h2>";
+    return;
+  }
+
+  const episode = anime.episodes.find(ep =>
+    ep.episodeNumber == episodeNum
+  );
+
+  if (!episode) {
+    document.getElementById("mainContent").innerHTML =
+      "<h2 style='text-align:center'>Episode not found</h2>";
+    return;
+  }
+
+  // SEO
+  document.title = `${anime.title} Episode ${episodeNum} | Watch Online`;
+  document.querySelector("meta[name='description']")
+    .setAttribute(
+      "content",
+      `Watch ${anime.title} Episode ${episodeNum} online in HD on AnimeZone`
+    );
+
+  // SAME PLAYER FUNCTION
+  displayVideoPlayerDetails(anime, episodeNum);
+});
+</script>
+
+</body>
+</html>

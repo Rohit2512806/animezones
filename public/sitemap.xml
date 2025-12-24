@@ -1,41 +1,259 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" 
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <!-- Home Page -->
-  <url>
-    <loc>https://animezone.sbs/</loc>
-    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
-    <priority>1.00</priority>
-  </url>
-
-  <!-- All Anime -->
-  <url>
-    <loc>https://animezone.sbs/all-anime.html</loc>
-    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
-    <priority>0.80</priority>
-  </url>
-
-  <!-- Anime Detail Page (example) -->
-  <url>
-    <loc>https://animezone.sbs/naruto.html</loc>
-    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
-    <priority>0.64</priority>
-  </url>
-
-  <!-- About Page -->
-  <url>
-    <loc>https://animezone.sbs/about.html</loc>
-    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
-    <priority>0.50</priority>
-  </url>
-
-  <!-- Contact Page -->
-  <url>
-    <loc>https://animezone.sbs/contact.html</loc>
-    <lastmod>2025-07-10T15:15:50+00:00</lastmod>
-    <priority>0.50</priority>
-  </url>
-
-</urlset>
+  <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
+      <url>
+        <loc>https://animezone.sbs/animes/1</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/12</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/15</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/16</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/17</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/18</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/19</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/2</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/20</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/21</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/22</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/23</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/24</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/25</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/26</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/28</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/29</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/3</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/30</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/32</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/34</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/35</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/36</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/37</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/39</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/4</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/41</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/42</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/43</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/44</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/45</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/46</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/47</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/48</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/49</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/5</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/50</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/51</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/52</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/53</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/54</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/55</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/56</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/57</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/58</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/59</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/6</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/60</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/61</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/62</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+      <url>
+        <loc>https://animezone.sbs/animes/63</loc>
+        <changefreq>weekly</changefreq>
+      </url>
+    
+  </urlset>
