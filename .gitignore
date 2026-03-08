@@ -10,3 +10,4 @@ node_modules/
 # OS/system specific files (optional safety)
 .DS_Store
 Thumbs.db
+admin
